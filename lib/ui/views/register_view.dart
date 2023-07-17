@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../inputs/custom_inputs.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+class RegisterView extends StatelessWidget {
+  const RegisterView({super.key});
   static const String route = '/Login';
 
   @override
@@ -23,8 +23,17 @@ class LoginView extends StatelessWidget {
                 TextFormField(
                   style: const TextStyle(color: Colors.white),
                   decoration: CustomInputs.authInputDecoration(
+                    hint: 'Ingrese su nombre',
+                    label: 'Nombre',
+                    iconData: Icons.supervised_user_circle_outlined,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: CustomInputs.authInputDecoration(
                     hint: 'Ingrese su correo',
-                    label: 'Email',
+                    label: 'Correo',
                     iconData: Icons.email_outlined,
                   ),
                 ),
@@ -40,15 +49,13 @@ class LoginView extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomOutlinedButton(
                   onPressed: () {},
-                  text: 'Ingresar',
-                  filled: true,
-                  color: Colors.red,
+                  text: 'Crear Cuenta',
                 ),
                 const SizedBox(height: 20),
                 LinkText(
-                  text: 'Nueva Cuenta',
+                  text: 'Ir al login',
                   onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(Flurorouter.registerRoute),
+                      .pushReplacementNamed(Flurorouter.loginRoute),
                 )
               ],
             ),
