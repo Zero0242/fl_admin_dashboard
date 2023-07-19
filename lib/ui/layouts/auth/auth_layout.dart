@@ -74,7 +74,9 @@ class _DesktopBody extends StatelessWidget {
       color: Colors.red,
       child: Row(
         children: <Widget>[
-          const BackgroundApp(),
+          const Expanded(
+            child: BackgroundApp(),
+          ),
           Container(
             width: 600,
             height: double.infinity,

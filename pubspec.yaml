@@ -1,9 +1,7 @@
 name: admin_dashboard
 description: A new Flutter project.
 
-
-publish_to: 'none' 
-
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -12,10 +10,13 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  email_validator: ^2.1.17
   fluro: ^2.0.5
   flutter:
     sdk: flutter
   google_fonts: ^5.1.0
+  provider: ^6.0.5
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -24,6 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/

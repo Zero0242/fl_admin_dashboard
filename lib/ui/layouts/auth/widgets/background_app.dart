@@ -5,18 +5,16 @@ class BackgroundApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      decoration: buildDecorationImage(),
       child: Container(
-        decoration: buildDecorationImage(),
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Image.asset(
-                'assets/twitter-white-logo.png',
-                width: 400,
-              ),
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Image.asset(
+              'assets/twitter-white-logo.png',
+              width: 400,
             ),
           ),
         ),
