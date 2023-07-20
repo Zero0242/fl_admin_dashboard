@@ -6,9 +6,5 @@ class SignInProvider extends ChangeNotifier {
   String email = '';
   String password = '';
 
-  validateForm() {
-    if (formKey.currentState!.validate()) {
-      print('Form Valid ... login');
-    }
-  }
+  bool validateForm() => formKey.currentState!.validate();
 }

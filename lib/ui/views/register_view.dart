@@ -1,10 +1,11 @@
-import 'package:admin_dashboard/providers/signin_form_provider.dart';
-import 'package:admin_dashboard/router/router.dart';
-import 'package:admin_dashboard/ui/buttons/custom_outlined_button.dart';
-import 'package:admin_dashboard/ui/buttons/link_text.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:admin_dashboard/router/router.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:admin_dashboard/ui/buttons/link_text.dart';
+import 'package:admin_dashboard/providers/auth_provider.dart';
+import 'package:admin_dashboard/providers/signin_form_provider.dart';
+import 'package:admin_dashboard/ui/buttons/custom_outlined_button.dart';
 
 import '../inputs/custom_inputs.dart';
 
@@ -23,8 +24,7 @@ class RegisterView extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 370),
             child: Builder(builder: (context) {
-              final provider =
-                  Provider.of<SignInProvider>(context, listen: false);
+              final provider = Provider.of<SignInProvider>(context, listen: false);
               return Form(
                 autovalidateMode: AutovalidateMode.always,
                 key: provider.formKey,
@@ -44,7 +44,7 @@ class RegisterView extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) => provider.email,
                       validator: (value) {
-                        if (EmailValidator.validate(value ?? '')) {
+                        if (!EmailValidator.validate(value ?? '')) {
                           return 'Email no valido';
                         }
                         return null;
@@ -77,15 +77,23 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 20),
                     CustomOutlinedButton(
                       onPressed: () {
-                        provider.validateForm();
+                        final res = provider.validateForm();
+                        if (!res) return;
+
+                        final auth = Provider.of<AuthProvider>(context);
+
+                        auth.register(
+                          email: provider.email,
+                          password: provider.password,
+                          name: provider.nombre,
+                        );
                       },
                       text: 'Crear Cuenta',
                     ),
                     const SizedBox(height: 20),
                     LinkText(
                       text: 'Ir al login',
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(Flurorouter.loginRoute),
+                      onTap: () => Navigator.of(context).pushReplacementNamed(Flurorouter.loginRoute),
                     )
                   ],
                 ),
