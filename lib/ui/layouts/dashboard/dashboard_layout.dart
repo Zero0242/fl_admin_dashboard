@@ -39,7 +39,14 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     // NavBar
                     const NavBar(),
                     // View
-                    Expanded(child: widget.child),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: widget.child,
+                    )),
                   ],
                 ),
               ),
@@ -51,6 +58,18 @@ class _DashboardLayoutState extends State<DashboardLayout>
               builder: (context, child) {
                 return Stack(
                   children: <Widget>[
+                    if (SideMenuProvider.isMenuOpen)
+                      Opacity(
+                        opacity: SideMenuProvider.opacity.value,
+                        child: GestureDetector(
+                          onTap: SideMenuProvider.closeMenu,
+                          child: Container(
+                            width: context.width,
+                            height: context.height,
+                            color: Colors.black26,
+                          ),
+                        ),
+                      ),
                     Transform.translate(
                       offset: Offset(SideMenuProvider.movement.value, 0),
                       child: const Sidebar(),
