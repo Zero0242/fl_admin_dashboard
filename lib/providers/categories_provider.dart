@@ -10,7 +10,7 @@ class CategoriasProvider extends ChangeNotifier {
   Future getCategories() async {
     final resp = await CafeApi.httpGet(endpoint: '/categorias');
     final categoriesResponse = CategoriesResponse.fromJson(resp);
-
+    categorias.clear();
     categorias = [...categorias, ...categoriesResponse.categorias];
     Future.delayed(
       const Duration(milliseconds: 300),

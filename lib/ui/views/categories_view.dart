@@ -24,38 +24,42 @@ class _CategoriesViewState extends State<CategoriesView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        Text('Vista Categoria', style: CustomLabels.h1),
-        const SizedBox(height: 10),
-        PaginatedDataTable(
-          header: const Center(
-            child: Text(
-              'Tabla de las categorias',
-              style: TextStyle(fontWeight: FontWeight.bold),
+    final provider = Provider.of<CategoriasProvider>(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: ListView(
+        physics: const ClampingScrollPhysics(),
+        children: <Widget>[
+          Text('Vista Categoria', style: CustomLabels.h1),
+          const SizedBox(height: 10),
+          PaginatedDataTable(
+            header: const Center(
+              child: Text(
+                'Tabla de las categorias',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
+            columns: const <DataColumn>[
+              DataColumn(label: Text('ID')),
+              DataColumn(label: Text('Categoria')),
+              DataColumn(label: Text('Usuario')),
+              DataColumn(label: Text('Acciones')),
+            ],
+            source: CategoriesSource(provider.categorias, context),
+            rowsPerPage: _rowsPerPage,
+            onRowsPerPageChanged: (value) {
+              setState(() => _rowsPerPage = value ?? 10);
+            },
+            actions: [
+              CustomIconButton(
+                onPressed: () {},
+                text: 'Crear',
+                icon: Icons.add_outlined,
+              ),
+            ],
           ),
-          columns: const <DataColumn>[
-            DataColumn(label: Text('ID')),
-            DataColumn(label: Text('Categoria')),
-            DataColumn(label: Text('Usuario')),
-            DataColumn(label: Text('Acciones')),
-          ],
-          source: CategoriesSource(),
-          rowsPerPage: _rowsPerPage,
-          onRowsPerPageChanged: (value) {
-            setState(() => _rowsPerPage = value ?? 10);
-          },
-          actions: [
-            CustomIconButton(
-              onPressed: () {},
-              text: 'Crear',
-              icon: Icons.add_outlined,
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

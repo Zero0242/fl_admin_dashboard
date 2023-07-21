@@ -13,8 +13,7 @@ class DashboardLayout extends StatefulWidget {
   State<DashboardLayout> createState() => _DashboardLayoutState();
 }
 
-class _DashboardLayoutState extends State<DashboardLayout>
-    with SingleTickerProviderStateMixin {
+class _DashboardLayoutState extends State<DashboardLayout> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     SideMenuProvider.menuController = AnimationController(
@@ -39,14 +38,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     // NavBar
                     const NavBar(),
                     // View
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      child: widget.child,
-                    )),
+                    Expanded(child: widget.child),
                   ],
                 ),
               ),
