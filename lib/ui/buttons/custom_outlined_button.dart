@@ -4,12 +4,14 @@ class CustomOutlinedButton extends StatelessWidget {
   const CustomOutlinedButton({
     super.key,
     this.onPressed,
+    this.textColor,
     this.color = Colors.blue,
     this.filled = false,
     required this.text,
   });
   final Function()? onPressed;
   final Color color;
+  final Color? textColor;
   final bool filled;
   final String text;
 
@@ -25,14 +27,13 @@ class CustomOutlinedButton extends StatelessWidget {
           side: MaterialStatePropertyAll(
             BorderSide(color: color),
           ),
-          backgroundColor: MaterialStatePropertyAll(
-              filled ? color.withOpacity(0.3) : Colors.transparent)),
+          backgroundColor: MaterialStatePropertyAll(filled ? color.withOpacity(0.3) : Colors.transparent)),
       onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color: textColor),
         ),
       ),
     );

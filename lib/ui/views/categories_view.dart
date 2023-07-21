@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../datatables/categories_datasource.dart';
 import '../buttons/custom_icon_button.dart';
 import '../labels/custom_labels.dart';
+import '../modals/categories_modal.dart';
 
 class CategoriesView extends StatefulWidget {
   const CategoriesView({super.key});
@@ -52,7 +53,13 @@ class _CategoriesViewState extends State<CategoriesView> {
             },
             actions: [
               CustomIconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (_) => const CategoryModal(),
+                  );
+                },
                 text: 'Crear',
                 icon: Icons.add_outlined,
               ),
