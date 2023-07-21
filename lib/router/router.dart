@@ -15,6 +15,7 @@ class Flurorouter {
   static String dashboardRoute = '/dashboard';
   static String iconsRoute = '/dashboard/icons';
   static String blankRoute = '/dashboard/blank';
+  static String categoriesRoute = '/dashboard/categories';
 
   static void configureRoute() {
     router.notFoundHandler = UnknownHandlers.noPageFound;
@@ -44,6 +45,11 @@ class Flurorouter {
     router.define(
       blankRoute,
       handler: DashboardHandlers.blank,
+      transitionType: defaultTransition,
+    );
+    router.define(
+      categoriesRoute,
+      handler: DashboardHandlers.categories,
       transitionType: defaultTransition,
     );
   }
