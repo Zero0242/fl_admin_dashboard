@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/helpers/cafe_api.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Flurorouter.rootRoute,
       onGenerateRoute: Flurorouter.router.generator,
       navigatorKey: NavigationService.navKey,
+      scaffoldMessengerKey: NotificationService.messengerKey,
       builder: (_, child) {
         final auth = Provider.of<AuthProvider>(context);
 

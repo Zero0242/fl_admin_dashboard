@@ -1,5 +1,7 @@
-import 'package:admin_dashboard/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:admin_dashboard/providers/auth_provider.dart';
+import 'package:admin_dashboard/ui/labels/custom_labels.dart';
 
 import '../cards/white_card.dart';
 
@@ -8,14 +10,15 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authUser = Provider.of<AuthProvider>(context).user!;
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
         Text('Dashboard View', style: CustomLabels.h1),
         const SizedBox(height: 10),
-        const WhiteCard(
-          title: 'Sales Statistics',
-          child: Text('Hola Mundo'),
+        WhiteCard(
+          title: authUser.nombre,
+          child: Text(authUser.correo),
         )
       ],
     );

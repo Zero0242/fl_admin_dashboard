@@ -1,7 +1,9 @@
 import 'package:admin_dashboard/helpers/cafe_api.dart';
+import 'package:admin_dashboard/models/http/auth_response.dart';
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/services/local_storage.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:flutter/material.dart';
 
 enum AuthStatus { notLogged, authenticated, checking }
@@ -9,38 +11,49 @@ enum AuthStatus { notLogged, authenticated, checking }
 class AuthProvider extends ChangeNotifier {
   String? _token;
   AuthStatus authStatus = AuthStatus.checking;
+  Usuario? user;
 
   AuthProvider() {
     isAuthenticated();
   }
 
-  login(String email, String password) {
-    //Todo peticion http
-    _token = 'awesometoken';
-    LocalStorage.prefs.setString('token', _token!);
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
-    NavigationService.navigateTo(Flurorouter.dashboardRoute);
+  void login(String email, String password) {
+    final data = {
+      'correo': email,
+      'password': password,
+    };
+    CafeApi.httpPost(endpoint: '/auth/login', data: data).then((json) {
+      final authResponse = AuthResponse.fromJson(json);
+      user = authResponse.usuario;
+      _token = authResponse.token;
+      LocalStorage.prefs.setString('token', _token!);
+      authStatus = AuthStatus.authenticated;
+      CafeApi.setupDio();
+      notifyListeners();
+      NavigationService.navigateTo(Flurorouter.dashboardRoute);
+    }).catchError((e) {
+      NotificationService.showSnackBarError('Hubo un error: $e');
+    });
   }
 
-  register({required String email, required String password, required String name}) {
+  void register({required String email, required String password, required String name}) {
     final data = {
-      'nombre': 'Test 16',
-      'correo': 'test16@test.com',
-      'password': '123456',
+      'nombre': name,
+      'correo': email,
+      'password': password,
     };
 
     CafeApi.httpPost(endpoint: '/usuarios', data: data).then((json) {
-      print(json);
+      final authResponse = AuthResponse.fromJson(json);
+      user = authResponse.usuario;
+      _token = authResponse.token;
+      LocalStorage.prefs.setString('token', _token!);
+      authStatus = AuthStatus.authenticated;
+      notifyListeners();
+      NavigationService.navigateTo(Flurorouter.dashboardRoute);
     }).catchError((e) {
-      print(e);
+      NotificationService.showSnackBarError('Hubo un error: $e');
     });
-    //Todo peticion http
-/*     _token = 'awesometoken';
-    LocalStorage.prefs.setString('token', _token!);
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
-    NavigationService.navigateTo(Flurorouter.dashboardRoute); */
   }
 
   Future<bool> isAuthenticated() async {
@@ -51,10 +64,19 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
 
-    Future.delayed(const Duration(milliseconds: 1000));
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
-    return true;
+    try {
+      final resp = await CafeApi.httpGet(endpoint: '/auth');
+      final authResponse = AuthResponse.fromJson(resp);
+      user = authResponse.usuario;
+      authStatus = AuthStatus.authenticated;
+      LocalStorage.prefs.setString('token', authResponse.token);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      authStatus = AuthStatus.authenticated;
+      notifyListeners();
+      return false;
+    }
   }
 
   void logout() async {

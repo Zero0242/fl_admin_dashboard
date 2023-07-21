@@ -31,8 +31,8 @@ class RegisterView extends StatelessWidget {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller: provider.nombre,
                       style: const TextStyle(color: Colors.white),
-                      onChanged: (value) => provider.nombre,
                       decoration: CustomInputs.authInputDecoration(
                         hint: 'Ingrese su nombre',
                         label: 'Nombre',
@@ -41,8 +41,8 @@ class RegisterView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: provider.email,
                       style: const TextStyle(color: Colors.white),
-                      onChanged: (value) => provider.email,
                       validator: (value) {
                         if (!EmailValidator.validate(value ?? '')) {
                           return 'Email no valido';
@@ -57,8 +57,8 @@ class RegisterView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: provider.password,
                       style: const TextStyle(color: Colors.white),
-                      onChanged: (value) => provider.password,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Ingrese su contraseña';
@@ -80,12 +80,12 @@ class RegisterView extends StatelessWidget {
                         final res = provider.validateForm();
                         if (!res) return;
 
-                        final auth = Provider.of<AuthProvider>(context);
+                        final auth = Provider.of<AuthProvider>(context, listen: false);
 
                         auth.register(
-                          email: provider.email,
-                          password: provider.password,
-                          name: provider.nombre,
+                          email: provider.email.text,
+                          password: provider.password.text,
+                          name: provider.nombre.text,
                         );
                       },
                       text: 'Crear Cuenta',

@@ -25,8 +25,7 @@ class LoginView extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 370),
             child: Builder(builder: (context) {
-              final provider =
-                  Provider.of<LoginFormProvider>(context, listen: false);
+              final provider = Provider.of<LoginFormProvider>(context, listen: false);
               return Form(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: provider.formKey,
@@ -36,7 +35,7 @@ class LoginView extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) => provider.email = value,
                       validator: (value) {
-                        if (EmailValidator.validate(value ?? '')) {
+                        if (!EmailValidator.validate(value ?? '')) {
                           return 'Email no válido';
                         }
                         return null;
@@ -83,8 +82,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 20),
                     LinkText(
                       text: 'Nueva Cuenta',
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(Flurorouter.registerRoute),
+                      onTap: () => Navigator.of(context).pushReplacementNamed(Flurorouter.registerRoute),
                     )
                   ],
                 ),
