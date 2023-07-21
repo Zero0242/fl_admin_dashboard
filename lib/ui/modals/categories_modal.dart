@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/providers/categories_provider.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:admin_dashboard/ui/buttons/custom_outlined_button.dart';
 import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
 import 'package:admin_dashboard/ui/labels/custom_labels.dart';
@@ -61,13 +62,19 @@ class _CategoryModalState extends State<CategoryModal> {
               textColor: Colors.white,
               text: 'Guardar',
               onPressed: () async {
-                if (_id == null) {
-                  await provider.createCategory(_nombre);
-                } else {
-                  await provider.updateCategory(_nombre, _id!);
+                try {
+                  if (_id == null) {
+                    await provider.createCategory(_nombre);
+                    NotificationService.showSnackBar('$_nombre creado');
+                  } else {
+                    await provider.updateCategory(_nombre, _id!);
+                    NotificationService.showSnackBar('$_nombre actualizado');
+                  }
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  Navigator.of(context).pop();
+                  NotificationService.showSnackBarError(e.toString());
                 }
-
-                Navigator.of(context).pop();
               },
             ),
           )

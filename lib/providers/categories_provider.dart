@@ -28,7 +28,7 @@ class CategoriasProvider extends ChangeNotifier {
       categorias.add(newCategory);
       notifyListeners();
     } catch (e) {
-      print(e);
+      throw 'Error al crear categoría';
     }
   }
 
@@ -56,7 +56,7 @@ class CategoriasProvider extends ChangeNotifier {
       categorias.remove(cat);
       notifyListeners();
     } catch (e) {
-      print(e);
+      throw 'Error al actualizar categoría';
     }
   }
 }
