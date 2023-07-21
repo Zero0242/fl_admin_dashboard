@@ -32,4 +32,24 @@ class CafeApi {
       log(e.toString(), name: endpoint);
     }
   }
+
+  static Future httpPut({required String endpoint, Map<String, dynamic>? data}) async {
+    final formData = FormData.fromMap(data ?? {});
+    try {
+      final resp = await _dio.put(endpoint, data: formData);
+      return resp.data;
+    } catch (e) {
+      log(e.toString(), name: endpoint);
+    }
+  }
+
+  static Future httpDelete({required String endpoint, Map<String, dynamic>? data}) async {
+    final formData = FormData.fromMap(data ?? {});
+    try {
+      final resp = await _dio.delete(endpoint, data: formData);
+      return resp.data;
+    } catch (e) {
+      log(e.toString(), name: endpoint);
+    }
+  }
 }

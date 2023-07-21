@@ -1,5 +1,8 @@
 import 'package:admin_dashboard/models/category.dart';
+import 'package:admin_dashboard/providers/categories_provider.dart';
+import 'package:admin_dashboard/ui/modals/categories_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CategoriesSource extends DataTableSource {
   CategoriesSource(this.categorias, this.context);
@@ -20,7 +23,13 @@ class CategoriesSource extends DataTableSource {
             children: [
               IconButton(
                 onPressed: () {
-                  print('editando: $categoria');
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (_) => CategoryModal(
+                      categoria: categoria,
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.edit_outlined),
               ),
@@ -36,7 +45,8 @@ class CategoriesSource extends DataTableSource {
                           },
                           child: const Text('No')),
                       TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await Provider.of<CategoriasProvider>(context, listen: false).deleteCategory(categoria);
                             Navigator.of(context).pop();
                           },
                           child: const Text('Si, borrar'))
