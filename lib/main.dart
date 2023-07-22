@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -30,6 +31,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider(), lazy: false),
         ChangeNotifierProvider(create: (_) => SideMenuProvider(), lazy: false),
         ChangeNotifierProvider(create: (_) => CategoriasProvider()),
+        ChangeNotifierProvider(create: (_) => UsersProvider()),
       ],
       child: const MyApp(),
     );

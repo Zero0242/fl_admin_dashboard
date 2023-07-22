@@ -6,6 +6,8 @@ import 'package:admin_dashboard/services/navigation_service.dart';
 import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:flutter/material.dart';
 
+import '../models/usuario_auth.dart';
+
 enum AuthStatus { notLogged, authenticated, checking }
 
 class AuthProvider extends ChangeNotifier {
