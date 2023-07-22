@@ -28,6 +28,7 @@ class _UserViewState extends State<UserView> {
     Provider.of<UsersProvider>(context, listen: false).getUser(widget.uid).then((userDB) {
       if (userDB != null) {
         form.user = userDB;
+        form.formKey = GlobalKey<FormState>();
         setState(() => _user = userDB);
       } else {
         NavigationService.navigateTo(Flurorouter.usersRoute);
