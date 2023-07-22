@@ -1,4 +1,6 @@
 import 'package:admin_dashboard/models/usuario_auth.dart';
+import 'package:admin_dashboard/router/router.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 
 class UsersDataSource extends DataTableSource {
@@ -17,7 +19,9 @@ class UsersDataSource extends DataTableSource {
         DataCell(Text(user.uid)),
         DataCell(
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.navigateTo('${Flurorouter.usersRoute}/${user.uid}');
+            },
             icon: const Icon(Icons.edit_outlined),
           ),
         ),

@@ -7,7 +7,9 @@ import '../models/usuario_auth.dart';
 class UsersProvider extends ChangeNotifier {
   List<Usuario> users = [];
   bool isLoading = true;
-  bool ascending = false;
+  bool ascending = true;
+
+  int? sortColumnIndex;
 
   UsersProvider() {
     getPaginatedUsers();
@@ -20,6 +22,16 @@ class UsersProvider extends ChangeNotifier {
     isLoading = false;
 
     notifyListeners();
+  }
+
+  Future<Usuario> getUser(String uid) async {
+    try {
+      final resp = await CafeApi.httpGet(endpoint: '/usuarios/$uid');
+      final user = Usuario.fromJson(resp);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void sortColumn<T>(Comparable<T> Function(Usuario user) getField) {

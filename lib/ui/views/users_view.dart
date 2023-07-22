@@ -19,15 +19,23 @@ class UsersView extends StatelessWidget {
           Text('Users View', style: CustomLabels.h1),
           const SizedBox(height: 10),
           PaginatedDataTable(
+            sortAscending: provider.ascending,
+            sortColumnIndex: provider.sortColumnIndex,
             columns: <DataColumn>[
               const DataColumn(label: Text('Avatar')),
               DataColumn(
                 label: const Text('Nombre'),
-                onSort: (index, _) => provider.sortColumn<String>((user) => user.nombre),
+                onSort: (index, _) {
+                  provider.sortColumnIndex = index;
+                  provider.sortColumn<String>((user) => user.nombre);
+                },
               ),
               DataColumn(
                 label: const Text('Email'),
-                onSort: (index, _) => provider.sortColumn<String>((user) => user.correo),
+                onSort: (index, _) {
+                  provider.sortColumnIndex = index;
+                  provider.sortColumn<String>((user) => user.correo);
+                },
               ),
               const DataColumn(label: Text('UID')),
               const DataColumn(label: Text('Acciones')),
