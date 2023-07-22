@@ -1,6 +1,11 @@
 import 'package:admin_dashboard/models/usuario_auth.dart';
+import 'package:admin_dashboard/providers/user_form_provider.dart';
 import 'package:admin_dashboard/providers/users_provider.dart';
+import 'package:admin_dashboard/router/router.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +24,23 @@ class _UserViewState extends State<UserView> {
   Usuario? _user;
   @override
   void initState() {
-    Provider.of<UsersProvider>(context, listen: false)
-        .getUser(widget.uid)
-        .then((userDB) => setState(() => _user = userDB));
+    final form = Provider.of<UserFormProvider>(context, listen: false);
+    Provider.of<UsersProvider>(context, listen: false).getUser(widget.uid).then((userDB) {
+      if (userDB != null) {
+        form.user = userDB;
+        setState(() => _user = userDB);
+      } else {
+        NavigationService.navigateTo(Flurorouter.usersRoute);
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _user = null;
+    Provider.of<UserFormProvider>(context, listen: false).user = null;
+    super.dispose();
   }
 
   @override
@@ -76,32 +94,63 @@ class _UserViewForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserFormProvider>(context);
+    final user = provider.user!;
+
     return WhiteCard(
       title: 'Información general',
       child: Form(
+        key: provider.formKey,
         autovalidateMode: AutovalidateMode.always,
         child: Column(
           children: <Widget>[
             TextFormField(
+              initialValue: user.nombre,
+              onChanged: (value) => provider.copyUserWith(nombre: value),
               decoration: CustomInputs.formInputDecoration(
                 hint: "Nombre del usuario",
                 label: "Nombre",
                 icon: Icons.supervised_user_circle_outlined,
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese un nombre';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             TextFormField(
+              initialValue: user.correo,
+              onChanged: (value) => user.correo = value,
               decoration: CustomInputs.formInputDecoration(
                 hint: "Correo del usuario",
                 label: "Correo",
                 icon: Icons.mark_email_read_outlined,
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese un Correo';
+                }
+                if (!EmailValidator.validate(value)) {
+                  return 'El correo no es válido';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 150),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final save = await provider.updateUser();
+                    if (save) {
+                      NotificationService.showSnackBar('Usuario actualizado');
+                      Provider.of<UsersProvider>(context, listen: false).refreshUser(user);
+                    } else {
+                      NotificationService.showSnackBarError('No se pudo guardar');
+                    }
+                  },
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.indigo),
                       shadowColor: MaterialStatePropertyAll(Colors.transparent)),
@@ -125,6 +174,8 @@ class _AvatarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserFormProvider>(context);
+    final user = provider.user!;
     return WhiteCard(
       width: 250,
       child: SizedBox(
@@ -163,9 +214,9 @@ class _AvatarContainer extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Nombre de usuario',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Text(
+              user.nombre,
+              style: const TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],

@@ -24,13 +24,13 @@ class UsersProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Usuario> getUser(String uid) async {
+  Future<Usuario?> getUser(String uid) async {
     try {
       final resp = await CafeApi.httpGet(endpoint: '/usuarios/$uid');
       final user = Usuario.fromJson(resp);
       return user;
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 
@@ -42,6 +42,12 @@ class UsersProvider extends ChangeNotifier {
       return ascending ? Comparable.compare(aValue, bValue) : Comparable.compare(bValue, aValue);
     });
     ascending = !ascending;
+    notifyListeners();
+  }
+
+  void refreshUser(Usuario newUser) {
+    users.removeWhere((user) => user.uid == newUser.uid);
+    users.add(newUser);
     notifyListeners();
   }
 }
