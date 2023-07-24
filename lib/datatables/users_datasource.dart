@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 class UsersDataSource extends DataTableSource {
   UsersDataSource(this.users);
   final List<Usuario> users;
-  final avatar = ClipOval(child: Image.asset('assets/no-image.jpg', width: 35, height: 35));
+  Widget avatar(Usuario user) => user.img == null
+      ? Image.asset('assets/no-image.jpg', width: 35, height: 35)
+      : FadeInImage.assetNetwork(placeholder: 'assets/loader.gif', image: user.img!, width: 35, height: 35);
   @override
   DataRow? getRow(int index) {
     final user = users[index];
     return DataRow.byIndex(
       index: index,
       cells: <DataCell>[
-        DataCell(avatar),
+        DataCell(ClipOval(child: avatar(user))),
         DataCell(Text(user.nombre)),
         DataCell(Text(user.correo)),
         DataCell(Text(user.uid)),

@@ -1,15 +1,19 @@
-import 'package:admin_dashboard/models/usuario_auth.dart';
-import 'package:admin_dashboard/providers/user_form_provider.dart';
-import 'package:admin_dashboard/providers/users_provider.dart';
-import 'package:admin_dashboard/router/router.dart';
-import 'package:admin_dashboard/services/navigation_service.dart';
-import 'package:admin_dashboard/services/notifications_service.dart';
-import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
-import 'package:email_validator/email_validator.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:admin_dashboard/router/router.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:admin_dashboard/models/usuario_auth.dart';
+import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
+import 'package:admin_dashboard/providers/users_provider.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:admin_dashboard/providers/user_form_provider.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 
 import '../cards/white_card.dart';
+
 import '../labels/custom_labels.dart';
 
 class UserView extends StatefulWidget {
@@ -73,19 +77,14 @@ class _UserViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Table(
-        columnWidths: const {0: FixedColumnWidth(250)},
-        children: const <TableRow>[
-          // Todo ancho columna
-          TableRow(children: <Widget>[
-            // Todo avatar
-            _AvatarContainer(),
-            // Todo formulario editar
-            _UserViewForm(),
-          ])
-        ],
-      ),
+    return Table(
+      columnWidths: const {0: FixedColumnWidth(250)},
+      children: const <TableRow>[
+        TableRow(children: <Widget>[
+          _AvatarContainer(),
+          _UserViewForm(),
+        ])
+      ],
     );
   }
 }
@@ -176,7 +175,15 @@ class _AvatarContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserFormProvider>(context);
+    final userProvider = Provider.of<UsersProvider>(context, listen: false);
     final user = provider.user!;
+
+    final image = (user.img == null)
+        ? Image.asset('assets/no-image.jpg')
+        : FadeInImage.assetNetwork(
+            placeholder: 'assets/loader.gif',
+            image: user.img!,
+          );
     return WhiteCard(
       width: 250,
       child: SizedBox(
@@ -192,7 +199,7 @@ class _AvatarContainer extends StatelessWidget {
               height: 160,
               child: Stack(
                 children: [
-                  ClipOval(child: Image.asset('assets/no-image.jpg')),
+                  ClipOval(child: image),
                   Positioned(
                     bottom: 5,
                     right: 5,
@@ -206,7 +213,17 @@ class _AvatarContainer extends StatelessWidget {
                       child: FloatingActionButton(
                         backgroundColor: Colors.indigo,
                         elevation: 9,
-                        onPressed: () {},
+                        onPressed: () async {
+                          final result = await FilePicker.platform.pickFiles();
+
+                          if (result != null) {
+                            NotificationService.showLoadIndicator(context);
+                            final updatedUser = await provider.uploadImage(result.files.first.bytes!);
+
+                            userProvider.refreshUser(updatedUser);
+                          }
+                          Navigator.of(context).pop();
+                        },
                         child: const Icon(Icons.camera_alt_outlined, size: 20),
                       ),
                     ),

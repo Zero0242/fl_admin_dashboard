@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:admin_dashboard/helpers/cafe_api.dart';
 import 'package:admin_dashboard/models/usuario_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,17 @@ class UserFormProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<Usuario> uploadImage(Uint8List bytes) async {
+    try {
+      final resp = await CafeApi.uploadFile(endpoint: '/uploads/usuarios/${user!.uid}', file: bytes);
+      user = Usuario.fromJson(resp);
+      notifyListeners();
+      return user!;
+    } catch (e) {
+      return user!;
     }
   }
 }

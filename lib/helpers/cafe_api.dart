@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:admin_dashboard/services/local_storage.dart';
 import 'package:dio/dio.dart';
@@ -47,6 +48,18 @@ class CafeApi {
     final formData = FormData.fromMap(data ?? {});
     try {
       final resp = await _dio.delete(endpoint, data: formData);
+      return resp.data;
+    } catch (e) {
+      log(e.toString(), name: endpoint);
+    }
+  }
+
+  static Future uploadFile({required String endpoint, required Uint8List file}) async {
+    final formData = FormData.fromMap({
+      'archivo': MultipartFile.fromBytes(file),
+    });
+    try {
+      final resp = await _dio.put(endpoint, data: formData);
       return resp.data;
     } catch (e) {
       log(e.toString(), name: endpoint);

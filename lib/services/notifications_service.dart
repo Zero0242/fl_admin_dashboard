@@ -19,4 +19,18 @@ class NotificationService {
 
     messengerKey.currentState!.showSnackBar(snackbar);
   }
+
+  static showLoadIndicator(BuildContext context) {
+    const AlertDialog dialog = AlertDialog(
+      content: SizedBox(
+        width: 100,
+        height: 100,
+        child: Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      ),
+    );
+
+    showDialog(context: context, builder: (_) => dialog);
+  }
 }
