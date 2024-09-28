@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/auth_background.dart';
-import 'widgets/auth_header.dart';
+import '../widgets/widgets.dart';
 
 class AuthLayout extends StatefulWidget {
   const AuthLayout({super.key, required this.child});

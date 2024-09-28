@@ -1,9 +1,7 @@
+import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../presentation/layout/layout.dart';
-import '../../presentation/views/views.dart';
 
 part 'app_router.g.dart';
 
