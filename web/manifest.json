@@ -1,6 +1,6 @@
 {
-    "name": "admin_dashboard",
-    "short_name": "admin_dashboard",
+    "name": "fl_admin_dashboard",
+    "short_name": "fl_admin_dashboard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
