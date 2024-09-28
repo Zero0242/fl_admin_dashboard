@@ -28,8 +28,8 @@ class Logger {
   }
 
   /// El log común del logger
-  void log(Object? value, {String character = ''}) {
-    _internalLogger(value, character);
+  void log(Object? value) {
+    _internalLogger(value, '');
   }
 
   /// El log en modo exito
