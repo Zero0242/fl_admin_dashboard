@@ -16,7 +16,7 @@ GoRouter appRouter(AppRouterRef ref) {
       GoRoute(
         path: AuthLayout.path,
         redirect: (context, state) {
-          if (state.matchedLocation == AuthLayout.path) {
+          if (state.fullPath == AuthLayout.path) {
             return [AuthLayout.path, LoginView.route].join('/');
           }
           return null;

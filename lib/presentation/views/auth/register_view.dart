@@ -8,7 +8,7 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: const Text('Login Screen body'),
+      child: const Text('Register Screen body'),
     );
   }
 }
