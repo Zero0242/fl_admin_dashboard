@@ -3,3 +3,6 @@
 /// Mediante - export 'interface/cat_interface.dart' -
 /// De esta forma se extraen desde este archivo
 library;
+
+export 'models/categoria.dart';
+export 'models/categoria_user.dart';

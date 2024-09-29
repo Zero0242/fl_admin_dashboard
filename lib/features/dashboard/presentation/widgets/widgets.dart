@@ -5,9 +5,9 @@ library;
 
 export 'logo.dart';
 export 'menu_item.dart';
-export 'nav_bar.dart';
-export 'nav_bar_avatar.dart';
+export 'nav/nav_bar.dart';
+export 'nav/nav_bar_avatar.dart';
+export 'nav/search_text.dart';
 export 'notifications_indicator.dart';
-export 'search_text.dart';
 export 'side_bar.dart';
 export 'text_separator.dart';
