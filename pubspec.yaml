@@ -1,32 +1,38 @@
-name: admin_dashboard
-description: A new Flutter project.
-
-publish_to: 'none'
-
-version: 1.0.0+1
+name: fl_admin_dashboard
+description: "Dashboard Flutter"
+publish_to: "none"
+version: 0.2.0
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ^3.5.3
 
 dependencies:
-  cupertino_icons: ^1.0.2
-  dio: ^5.3.0
-  email_validator: ^2.1.17
-  file_picker: ^5.3.3
-  fluro: ^2.0.5
+  email_validator: ^3.0.0
+  file_picker: ^8.1.2
   flutter:
     sdk: flutter
-  google_fonts: ^5.1.0
-  provider: ^6.0.5
-  shared_preferences: ^2.2.0
+  flutter_riverpod: ^2.5.1
+  get_storage: ^2.1.1
+  go_router: ^14.2.8
+  google_fonts: ^6.2.1
+  http: ^1.2.2
+  riverpod_annotation: ^2.3.5
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
+  build_runner: ^2.4.12
+  custom_lint: ^0.6.7
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
+  riverpod_generator: ^2.4.3
+  riverpod_lint: ^2.3.13
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/
+    - assets/icons/
+    - assets/images/
+    - assets/json/
+    - assets/svg/
