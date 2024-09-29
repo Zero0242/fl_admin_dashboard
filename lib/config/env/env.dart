@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 
-/// Diferentes entornos de la app
-enum EnvMode { production, development, local }
+import '../constants/env_mode.dart';
 
 /// Con esta clase gestionamos las variables de entorno
 ///

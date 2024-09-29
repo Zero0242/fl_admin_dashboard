@@ -61,9 +61,7 @@ class LoginView extends ConsumerWidget {
                 const SizedBox(height: 20),
                 LinkText(
                   text: 'Nueva Cuenta',
-                  onTap: () {
-                    context.pushReplacementNamed(RegisterView.fullRoute);
-                  },
+                  onTap: () => context.go(RegisterView.fullRoute),
                 ),
               ],
             ),

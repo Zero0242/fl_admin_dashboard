@@ -1,4 +1,5 @@
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
+import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,21 +22,15 @@ GoRouter appRouter(AppRouterRef ref) {
         },
         routes: [
           ShellRoute(
-            builder: (context, state, child) {
-              return AuthLayout(child: child);
-            },
+            builder: (_, __, child) => AuthLayout(child: child),
             routes: [
               GoRoute(
                 path: LoginView.route,
-                builder: (context, state) {
-                  return const LoginView();
-                },
+                pageBuilder: FadeTransitionRoute.route(const LoginView()),
               ),
               GoRoute(
                 path: RegisterView.route,
-                builder: (context, state) {
-                  return const RegisterView();
-                },
+                pageBuilder: FadeTransitionRoute.route(const RegisterView()),
               ),
             ],
           ),

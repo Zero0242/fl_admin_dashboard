@@ -35,6 +35,7 @@ class _AuthLayoutState extends State<AuthLayout> {
               _DesktopComponent(child: widget.child)
             else
               _MobileComponent(child: widget.child),
+            const LinkBar(),
           ],
         ),
       ),

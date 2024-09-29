@@ -2,6 +2,6 @@
 ///
 /// Por ejemplo las llaves que se guardan en localstorage
 class StorageKeys {
-  static const String tokenKey = 'token';
-  static const String themeKey = 'theme';
+  static const String token = 'token';
+  static const String theme = 'theme';
 }

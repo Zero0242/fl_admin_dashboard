@@ -28,6 +28,7 @@ class _LinkTextState extends State<LinkText> {
               color: Colors.grey[700],
               fontSize: 16,
               decoration: isHovered ? TextDecoration.underline : null,
+              decorationColor: Colors.white,
             ),
           ),
         ),
