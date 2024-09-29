@@ -1,31 +1,28 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:fl_admin_dashboard/config/plugins/logger_pluggin.dart';
 import 'package:fl_admin_dashboard/features/auth/domain/domain.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'auth_service_provider.dart';
 
-part 'auth_state_provider.g.dart';
+final authStateProvider =
+    StateNotifierProvider<AuthStateNotifier, AuthState>((ref) {
+  final service = ref.read(authServiceProvider);
 
-@Riverpod(keepAlive: true)
-class AuthState extends _$AuthState {
-  AuthState() {
-    _checkLogin();
+  return AuthStateNotifier(service: service);
+});
+
+class AuthStateNotifier extends StateNotifier<AuthState> {
+  AuthStateNotifier({
+    required this.service,
+  }) : super(AuthState()) {
+    Future.delayed(const Duration(seconds: 5), _checkLogin);
   }
+  final AuthService service;
 
   final _logger = const Logger('AuthStateProvider');
 
-  @override
-  AuthValues build() {
-    return AuthValues(
-      usuario: null,
-      status: AuthStatus.checking,
-    );
-  }
-
   void _checkLogin() async {
     _logger.log('Verificando login');
-    final service = ref.read(authServiceProvider);
     final result = await service.checkLogin();
     if (result == null) {
       state = state.copyWith(status: AuthStatus.notauthenticated);
@@ -38,7 +35,6 @@ class AuthState extends _$AuthState {
   }
 
   void login(String email, String password) async {
-    final service = ref.read(authServiceProvider);
     final result = await service.login({"correo": email, "password": password});
     if (result == null) return;
     state = state.copyWith(
@@ -52,7 +48,6 @@ class AuthState extends _$AuthState {
     required String password,
     required String fullname,
   }) async {
-    final service = ref.read(authServiceProvider);
     final result = await service
         .register({"correo": email, "password": password, "nombre": fullname});
     if (result == null) return;
@@ -67,22 +62,26 @@ class AuthState extends _$AuthState {
   }
 }
 
-class AuthValues {
-  AuthValues({
-    required this.usuario,
-    required this.status,
+class AuthState {
+  AuthState({
+    this.usuario,
+    this.status = AuthStatus.checking,
   });
 
   final Usuario? usuario;
   final AuthStatus status;
 
-  AuthValues copyWith({
+  AuthState copyWith({
     Usuario? usuario,
     AuthStatus? status,
   }) {
-    return AuthValues(
+    return AuthState(
       usuario: usuario,
       status: status ?? this.status,
     );
+  }
+
+  bool get isChecking {
+    return status == AuthStatus.checking;
   }
 }

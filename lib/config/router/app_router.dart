@@ -4,14 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'app_router_notifier.dart';
+
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
+  final routerNotifier = ref.read(appRouterNotifier);
   return GoRouter(
     debugLogDiagnostics: kDebugMode,
-    initialLocation: AuthLayout.path,
+    initialLocation: SplashScreen.route,
+    refreshListenable: routerNotifier,
     routes: <RouteBase>[
+      GoRoute(
+        path: SplashScreen.route,
+        pageBuilder: FadeTransitionRoute.route(const SplashScreen()),
+      ),
       GoRoute(
         path: AuthLayout.path,
         redirect: (context, state) {
@@ -35,5 +43,15 @@ GoRouter appRouter(AppRouterRef ref) {
         ],
       ),
     ],
+    redirect: (context, state) {
+      final isGoingTo = state.fullPath ?? '';
+      final authStatus = ref.read(authStateProvider);
+      if (isGoingTo == SplashScreen.route && authStatus.isChecking) return null;
+      if (authStatus.status == AuthStatus.notauthenticated) {
+        if (isGoingTo.contains(AuthLayout.path)) return null;
+        return LoginView.fullRoute;
+      }
+      return null;
+    },
   );
 }
