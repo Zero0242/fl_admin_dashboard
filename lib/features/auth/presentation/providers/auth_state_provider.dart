@@ -1,6 +1,7 @@
-import 'package:fl_admin_dashboard/config/plugins/logger_pluggin.dart';
+import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/auth/domain/domain.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'auth_service_provider.dart';
 
@@ -15,9 +16,10 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   AuthStateNotifier({
     required this.service,
   }) : super(AuthState()) {
-    Future.delayed(const Duration(seconds: 5), _checkLogin);
+    _checkLogin();
   }
   final AuthService service;
+  GetStorage get storage => GetStorage();
 
   final _logger = const Logger('AuthStateProvider');
 
@@ -27,6 +29,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     if (result == null) {
       state = state.copyWith(status: AuthStatus.notauthenticated);
     } else {
+      await storage.write(StorageKeys.token, result.$2);
       state = state.copyWith(
         status: AuthStatus.authenticated,
         usuario: result.$1,
@@ -37,6 +40,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
   void login(String email, String password) async {
     final result = await service.login({"correo": email, "password": password});
     if (result == null) return;
+    await storage.write(StorageKeys.token, result.$2);
     state = state.copyWith(
       status: AuthStatus.authenticated,
       usuario: result.$1,
@@ -51,6 +55,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     final result = await service
         .register({"correo": email, "password": password, "nombre": fullname});
     if (result == null) return;
+    await storage.write(StorageKeys.token, result.$2);
     state = state.copyWith(
       status: AuthStatus.authenticated,
       usuario: result.$1,

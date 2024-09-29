@@ -10,8 +10,9 @@ class AuthServiceApi extends AuthService {
   Future<(Usuario, String)?> checkLogin() async {
     try {
       final result = await dashboardApi.get('/api/auth');
-      final usuario = Usuario.fromMap(result.data['usuario']);
-      final token = result.data['token'] as String;
+      final data = jsonDecode(result.body);
+      final usuario = Usuario.fromMap(data['usuario']);
+      final token = data['token'] as String;
       return (usuario, token);
     } catch (e) {
       _logger.error('Error en checkLogin $e');
@@ -22,12 +23,13 @@ class AuthServiceApi extends AuthService {
   @override
   Future<(Usuario, String)?> login(Map<String, String> form) async {
     try {
-      final result = await dashboardApi.get(
+      final result = await dashboardApi.post(
         '/api/auth/login',
-        data: json.encode(form),
+        body: json.encode(form),
       );
-      final usuario = Usuario.fromMap(result.data['usuario']);
-      final token = result.data['token'] as String;
+      final data = jsonDecode(result.body);
+      final usuario = Usuario.fromMap(data['usuario']);
+      final token = data['token'] as String;
       return (usuario, token);
     } catch (e) {
       _logger.error('Error en login $e');
@@ -38,12 +40,13 @@ class AuthServiceApi extends AuthService {
   @override
   Future<(Usuario, String)?> register(Map<String, String> form) async {
     try {
-      final result = await dashboardApi.get(
+      final result = await dashboardApi.post(
         '/api/usuarios',
-        data: form,
+        body: jsonEncode(form),
       );
-      final usuario = Usuario.fromMap(result.data['usuario']);
-      final token = result.data['token'] as String;
+      final data = jsonDecode(result.body);
+      final usuario = Usuario.fromMap(data['usuario']);
+      final token = data['token'] as String;
       return (usuario, token);
     } catch (e) {
       _logger.error('Error en register $e');

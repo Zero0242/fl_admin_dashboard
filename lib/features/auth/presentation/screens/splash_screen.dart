@@ -11,10 +11,8 @@ class SplashScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[Text('Cargando')],
-          ),
+          Row(),
+          Text('Cargando'),
           CircularProgressIndicator.adaptive(),
         ],
       ),

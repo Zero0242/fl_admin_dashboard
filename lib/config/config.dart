@@ -7,6 +7,7 @@ export 'api/dashboard_api.dart';
 export 'constants/storage_constants.dart';
 export 'env/env.dart';
 export 'helpers/validators.dart';
+export 'plugins/http_plugin.dart';
 export 'plugins/logger_pluggin.dart';
 export 'router/app_router.dart';
 export 'theme/app_theme.dart';
