@@ -1,10 +1,14 @@
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../layout/dashboard_layout.dart';
+import '../providers/providers.dart';
+import '../views/views.dart';
 
-class UserView extends StatefulWidget {
+class UserView extends ConsumerWidget {
   const UserView({super.key, required this.uid});
   final String uid;
 
@@ -12,69 +16,58 @@ class UserView extends StatefulWidget {
   static const String fullRoute = '${DashboardLayout.path}/$route';
 
   @override
-  State<UserView> createState() => _UserViewState();
-}
-
-class _UserViewState extends State<UserView> {
-  Usuario? _user;
-  @override
-  void initState() {
-    // final form = Provider.of<UserFormProvider>(context, listen: false);
-    // Provider.of<UsersProvider>(context, listen: false).getUser(widget.uid).then((userDB) {
-    //   if (userDB != null) {
-    //     form.user = userDB;
-    //     form.formKey = GlobalKey<FormState>();
-    //     setState(() => _user = userDB);
-    //   } else {
-    //     NavigationService.navigateTo(Flurorouter.usersRoute);
-    //   }
-    // });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // _user = null;
-    // Provider.of<UserFormProvider>(context, listen: false).user = null;
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(userProviderByIdProvider(uid));
+    return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: ListView(
-        physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          Text('User View', style: CustomLabels.h1),
-          const SizedBox(height: 10),
-          if (_user == null)
-            WhiteCard(
-              child: Container(
-                height: 300,
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator.adaptive(),
-              ),
+      physics: const ClampingScrollPhysics(),
+      children: <Widget>[
+        Text('User View', style: CustomLabels.h1),
+        const SizedBox(height: 10),
+        userAsync.when(
+          loading: () => WhiteCard(
+            child: Container(
+              height: 300,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator.adaptive(),
             ),
-          if (_user != null) const _UserViewBody(),
-        ],
-      ),
+          ),
+          data: (data) => _UserViewBody(data),
+          error: (error, stackTrace) => WhiteCard(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const Row(),
+                Text('Usuario no encontrado', style: CustomLabels.h2),
+                LinkText(
+                  text: 'Volver Atrás',
+                  onTap: () {
+                    context.go(UsersView.fullRoute);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class _UserViewBody extends StatelessWidget {
-  const _UserViewBody();
+  const _UserViewBody(this.usuario);
+  final Usuario usuario;
 
   @override
   Widget build(BuildContext context) {
     return Table(
       columnWidths: const {0: FixedColumnWidth(250)},
-      children: const <TableRow>[
+      children: <TableRow>[
         TableRow(
           children: <Widget>[
-            _AvatarContainer(),
-            _UserViewForm(),
+            _AvatarContainer(usuario.id),
+            const _UserViewForm(),
           ],
         ),
       ],
@@ -166,21 +159,14 @@ class _UserViewForm extends StatelessWidget {
   }
 }
 
-class _AvatarContainer extends StatelessWidget {
-  const _AvatarContainer();
+class _AvatarContainer extends ConsumerWidget {
+  const _AvatarContainer(this.id);
+  final String id;
 
   @override
-  Widget build(BuildContext context) {
-    // final provider = Provider.of<UserFormProvider>(context);
-    // final userProvider = Provider.of<UsersProvider>(context, listen: false);
-    // final user = provider.user!;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProviderByIdProvider(id)).value!;
 
-    // final image = (user.img == null)
-    //     ? Image.asset('assets/no-image.jpg')
-    //     : FadeInImage.assetNetwork(
-    //         placeholder: 'assets/loader.gif',
-    //         image: user.img!,
-    //       );
     return WhiteCard(
       width: 250,
       child: SizedBox(
@@ -195,8 +181,8 @@ class _AvatarContainer extends StatelessWidget {
               width: 150,
               height: 160,
               child: Stack(
-                children: [
-                  // ClipOval(child: image),
+                children: <Widget>[
+                  ClipOval(child: avatar(user.avatar)),
                   Positioned(
                     bottom: 5,
                     right: 5,
@@ -229,14 +215,22 @@ class _AvatarContainer extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Text(
-            //   user.nombre,
-            //   style: const TextStyle(fontWeight: FontWeight.bold),
-            //   textAlign: TextAlign.center,
-            // ),
+            Text(
+              user.nombre,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget avatar(String? avatar) {
+    if (avatar == null) return Image.asset('assets/images/no-image.jpg');
+    return FadeInImage.assetNetwork(
+      placeholder: 'assets/images/loader.gif',
+      image: avatar,
     );
   }
 }

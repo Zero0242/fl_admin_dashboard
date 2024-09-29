@@ -4,6 +4,7 @@
 library;
 
 export 'datatables/category_datasource.dart';
+export 'datatables/users_datasource.dart';
 export 'logo.dart';
 export 'menu_item.dart';
 export 'modals/category_modal.dart';

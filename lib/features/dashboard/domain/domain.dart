@@ -6,3 +6,4 @@ library;
 
 export 'models/categoria.dart';
 export 'services/categories_service.dart';
+export 'services/users_service.dart';

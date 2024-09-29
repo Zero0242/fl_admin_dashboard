@@ -5,3 +5,4 @@ library;
 
 export 'categories_provider.dart';
 export 'dashboard_provider.dart';
+export 'users_provider.dart';
