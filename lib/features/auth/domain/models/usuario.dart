@@ -6,12 +6,14 @@ class Usuario {
     required this.nombre,
     required this.correo,
     required this.rol,
+    this.avatar,
   });
 
   final String id;
   final String nombre;
   final String correo;
   final String rol;
+  final String? avatar;
 
   factory Usuario.fromMap(Map<String, dynamic> map) {
     return Usuario(
@@ -19,6 +21,7 @@ class Usuario {
       nombre: map['nombre'] as String,
       correo: map['correo'] as String,
       rol: map['rol'] as String,
+      avatar: map['avatar'],
     );
   }
 }

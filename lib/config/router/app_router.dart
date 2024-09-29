@@ -84,6 +84,13 @@ GoRouter appRouter(AppRouterRef ref) {
                     path: UsersView.route,
                     pageBuilder: FadeTransitionRoute.route(const UsersView()),
                   ),
+                  GoRoute(
+                    path: UserView.route,
+                    builder: (context, state) {
+                      final uid = state.pathParameters['uid'] ?? '';
+                      return UserView(uid: uid);
+                    },
+                  ),
                 ],
               ),
               StatefulShellBranch(
