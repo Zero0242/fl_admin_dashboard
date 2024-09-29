@@ -12,7 +12,7 @@ class MenuItem extends StatefulWidget {
   final String text;
   final IconData icon;
   final bool isActive;
-  final Function()? onTap;
+  final VoidCallback? onTap;
 
   @override
   State<MenuItem> createState() => _MenuItemState();

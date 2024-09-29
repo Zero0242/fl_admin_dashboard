@@ -23,6 +23,14 @@ class _DashboardLayoutState extends State<DashboardLayout>
     super.initState();
   }
 
+  String? get currentRoute {
+    return widget.shell.shellRouteContext.routerState.fullPath;
+  }
+
+  void onChange(int index) {
+    widget.shell.goBranch(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -32,7 +40,11 @@ class _DashboardLayoutState extends State<DashboardLayout>
         children: <Widget>[
           Row(
             children: <Widget>[
-              if (size.width > 700) Sidebar(shell: widget.shell),
+              if (size.width > 700)
+                Sidebar(
+                  currentRoute: currentRoute,
+                  goBranch: onChange,
+                ),
               Expanded(
                 child: Column(
                   children: <Widget>[

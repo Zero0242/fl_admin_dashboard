@@ -1,28 +1,27 @@
 import 'package:fl_admin_dashboard/features/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../views/views.dart';
 import '../widgets/widgets.dart';
 
 class Sidebar extends ConsumerWidget {
-  const Sidebar({super.key, required this.shell});
-  final StatefulNavigationShell shell;
+  const Sidebar({
+    super.key,
+    required this.currentRoute,
+    required this.goBranch,
+  });
+
+  final String? currentRoute;
+  final void Function(int index) goBranch;
 
   void _navigateTo(int index) {
-    shell.goBranch(index);
-    // NavigationService.navigateTo(routeName);
+    goBranch(index);
     // SideMenuProvider.closeMenu();
-  }
-
-  String? get currentRoute {
-    return shell.shellRouteContext.routerState.fullPath;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final provider = Provider.of<SideMenuProvider>(context);
     return Container(
       width: 200,
       height: double.infinity,
@@ -34,17 +33,17 @@ class Sidebar extends ConsumerWidget {
           const SizedBox(height: 50),
           const TextSeparator(text: 'main'),
           MenuItem(
-            isActive: currentRoute == DashboardView.fullRoute,
             text: 'Dashboard',
             icon: Icons.compass_calibration_outlined,
-            // onTap: () => _navigateTo(0),
+            isActive: currentRoute == DashboardView.fullRoute,
+            onTap: () => _navigateTo(0),
           ),
           const MenuItem(text: 'Orders', icon: Icons.shopping_cart_outlined),
           MenuItem(
             text: 'Categories',
             icon: Icons.category_outlined,
             isActive: currentRoute == CategoriesView.fullRoute,
-            // onTap: () => _navigateTo(Flurorouter.categoriesRoute),
+            onTap: () => _navigateTo(1),
           ),
           const MenuItem(text: 'Products', icon: Icons.dashboard_outlined),
           const MenuItem(text: 'Discount', icon: Icons.attach_money),
@@ -52,15 +51,15 @@ class Sidebar extends ConsumerWidget {
             text: 'Users',
             icon: Icons.people_alt_outlined,
             isActive: currentRoute == UsersView.fullRoute,
-            // onTap: () => _navigateTo(Flurorouter.usersRoute),
+            onTap: () => _navigateTo(2),
           ),
           const SizedBox(height: 30),
           const TextSeparator(text: 'UI Elements'),
           MenuItem(
-            isActive: currentRoute == IconsView.fullRoute,
             text: 'Icons',
             icon: Icons.list_outlined,
-            // onTap: () => _navigateTo(3),
+            isActive: currentRoute == IconsView.fullRoute,
+            onTap: () => _navigateTo(3),
           ),
           const MenuItem(text: 'Marketing', icon: Icons.campaign_outlined),
           const MenuItem(text: 'Campaign', icon: Icons.note_add_outlined),
@@ -68,16 +67,14 @@ class Sidebar extends ConsumerWidget {
             text: 'Blank',
             icon: Icons.post_add_outlined,
             isActive: currentRoute == BlankView.fullRoute,
-            // onTap: () => _navigateTo(4),
+            onTap: () => _navigateTo(4),
           ),
           const SizedBox(height: 50),
           const TextSeparator(text: 'Exit'),
           MenuItem(
             text: 'Logout',
             icon: Icons.exit_to_app_outlined,
-            onTap: () {
-              ref.read(authStateProvider.notifier).logout();
-            },
+            onTap: () => ref.read(authStateProvider.notifier).logout(),
           ),
         ],
       ),

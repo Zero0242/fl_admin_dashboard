@@ -61,26 +61,41 @@ GoRouter appRouter(AppRouterRef ref) {
             },
             branches: [
               StatefulShellBranch(
-                initialLocation: DashboardView.fullRoute,
                 routes: [
                   GoRoute(
                     path: DashboardView.route,
                     pageBuilder:
                         FadeTransitionRoute.route(const DashboardView()),
                   ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
                   GoRoute(
                     path: CategoriesView.route,
                     pageBuilder:
                         FadeTransitionRoute.route(const CategoriesView()),
                   ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
                   GoRoute(
                     path: UsersView.route,
                     pageBuilder: FadeTransitionRoute.route(const UsersView()),
                   ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
                   GoRoute(
                     path: IconsView.route,
                     pageBuilder: FadeTransitionRoute.route(const IconsView()),
                   ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
                   GoRoute(
                     path: BlankView.route,
                     pageBuilder: FadeTransitionRoute.route(const BlankView()),
