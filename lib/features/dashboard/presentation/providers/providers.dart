@@ -3,4 +3,5 @@
 /// De esta forma los controladores se llaman desde aca
 library;
 
+export 'categories_provider.dart';
 export 'dashboard_provider.dart';

@@ -5,4 +5,4 @@
 library;
 
 export 'models/categoria.dart';
-export 'models/categoria_user.dart';
+export 'services/categories_service.dart';

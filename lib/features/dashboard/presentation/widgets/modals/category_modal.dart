@@ -1,16 +1,19 @@
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/domain.dart';
+import '../../providers/providers.dart';
 
-class CategoryModal extends StatefulWidget {
+class CategoryModal extends ConsumerStatefulWidget {
   const CategoryModal({super.key, this.categoria});
   final Categoria? categoria;
   @override
-  State<CategoryModal> createState() => _CategoryModalState();
+  ConsumerState<CategoryModal> createState() => _CategoryModalState();
 }
 
-class _CategoryModalState extends State<CategoryModal> {
+class _CategoryModalState extends ConsumerState<CategoryModal> {
   String _nombre = '';
   String? _id;
 
@@ -21,10 +24,18 @@ class _CategoryModalState extends State<CategoryModal> {
     super.initState();
   }
 
+  void onSubmit() async {
+    final provider = ref.read(categoriesNotifierProvider.notifier);
+    if (_id == null) {
+      provider.addCategory(_nombre);
+    } else {
+      provider.updateCategory(_id!, _nombre);
+    }
+    context.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<CategoriasProvider>(context, listen: false);
-
     return Container(
       height: 500,
       padding: const EdgeInsets.all(20),
@@ -34,11 +45,14 @@ class _CategoryModalState extends State<CategoryModal> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(widget.categoria?.nombre ?? 'Nueva Categoria',
-                  style: CustomLabels.h1.copyWith(color: Colors.white)),
+              Text(
+                widget.categoria?.nombre ?? 'Nueva Categoria',
+                style: CustomLabels.h1.copyWith(color: Colors.white),
+              ),
               IconButton(
-                  onPressed: Navigator.of(context).pop,
-                  icon: const Icon(Icons.close, color: Colors.white)),
+                onPressed: Navigator.of(context).pop,
+                icon: const Icon(Icons.close, color: Colors.white),
+              ),
             ],
           ),
           Divider(color: Colors.white.withOpacity(0.3)),
@@ -59,21 +73,7 @@ class _CategoryModalState extends State<CategoryModal> {
               color: Colors.white,
               textColor: Colors.white,
               text: 'Guardar',
-              onPressed: () async {
-                // try {
-                //   if (_id == null) {
-                //     await provider.createCategory(_nombre);
-                //     NotificationService.showSnackBar('$_nombre creado');
-                //   } else {
-                //     await provider.updateCategory(_nombre, _id!);
-                //     NotificationService.showSnackBar('$_nombre actualizado');
-                //   }
-                //   Navigator.of(context).pop();
-                // } catch (e) {
-                //   Navigator.of(context).pop();
-                //   NotificationService.showSnackBarError(e.toString());
-                // }
-              },
+              onPressed: onSubmit,
             ),
           ),
         ],
