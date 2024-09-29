@@ -49,14 +49,19 @@ class UsersNotifier extends _$UsersNotifier {
     state = [result, ...state];
   }
 
-  void updateUser(String id, String name) async {
+  void updateUser(
+    String id, {
+    required String name,
+    required String correo,
+  }) async {
     final service = ref.read(usersServiceProvider);
-    // final result = await service.updateCategoria(id, {'nombre': name});
-    // if (result == null) return;
-    // state = state.map((e) {
-    //   if (e.id == id) return e.copyWith(nombre: name);
-    //   return e;
-    // }).toList();
+    final result =
+        await service.updateUsuario(id, {'nombre': name, 'correo': correo});
+    if (result == null) return;
+    state = state.map((e) {
+      if (e.id == id) return result;
+      return e;
+    }).toList();
   }
 
   void deleteUser(String id) async {

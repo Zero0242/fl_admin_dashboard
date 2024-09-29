@@ -1,6 +1,7 @@
 import 'package:fl_admin_dashboard/features/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../providers/providers.dart';
 import '../views/views.dart';
@@ -56,8 +57,11 @@ class _SidebarState extends ConsumerState<Sidebar> {
           MenuItem(
             text: 'Users',
             icon: Icons.people_alt_outlined,
-            isActive: widget.currentRoute == UsersView.fullRoute,
-            onTap: () => _navigateTo(2),
+            isActive:
+                widget.currentRoute?.contains(UsersView.fullRoute) ?? false,
+            onTap: () {
+              context.go(UsersView.fullRoute);
+            },
           ),
           const SizedBox(height: 30),
           const TextSeparator(text: 'UI Elements'),

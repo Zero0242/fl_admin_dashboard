@@ -1,3 +1,4 @@
+import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _UserViewBody extends StatelessWidget {
         TableRow(
           children: <Widget>[
             _AvatarContainer(usuario.id),
-            const _UserViewForm(),
+            _UserViewForm(usuario),
           ],
         ),
       ],
@@ -75,14 +76,36 @@ class _UserViewBody extends StatelessWidget {
   }
 }
 
-class _UserViewForm extends StatelessWidget {
-  const _UserViewForm();
+class _UserViewForm extends ConsumerStatefulWidget {
+  const _UserViewForm(this.usuario);
+  final Usuario usuario;
+
+  @override
+  ConsumerState<_UserViewForm> createState() => _UserViewFormState();
+}
+
+class _UserViewFormState extends ConsumerState<_UserViewForm> {
+  final nombre = TextEditingController();
+  final correo = TextEditingController();
+
+  @override
+  void initState() {
+    final user = widget.usuario;
+    nombre.text = user.nombre;
+    correo.text = user.correo;
+    super.initState();
+  }
+
+  void onSubmit() async {
+    ref.read(usersNotifierProvider.notifier).updateUser(
+          widget.usuario.id,
+          correo: correo.text,
+          name: nombre.text,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<UserFormProvider>(context);
-    // final user = provider.user!;
-
     return WhiteCard(
       title: 'Información general',
       child: Form(
@@ -91,61 +114,39 @@ class _UserViewForm extends StatelessWidget {
         child: Column(
           children: <Widget>[
             TextFormField(
-              // initialValue: user.nombre,
+              controller: nombre,
               // onChanged: (value) => provider.copyUserWith(nombre: value),
               decoration: CustomInputs.formInputDecoration(
                 hint: "Nombre del usuario",
                 label: "Nombre",
                 icon: Icons.supervised_user_circle_outlined,
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Ingrese un nombre';
-                }
-                return null;
-              },
+              validator: Validators.createValidation(
+                message: 'Debe ingresar un nombre',
+              ),
             ),
             const SizedBox(height: 20),
             TextFormField(
-              // initialValue: user.correo,
-              // onChanged: (value) => user.correo = value,
+              controller: correo,
               decoration: CustomInputs.formInputDecoration(
                 hint: "Correo del usuario",
                 label: "Correo",
                 icon: Icons.mark_email_read_outlined,
               ),
-              validator: (value) {
-                return null;
-
-                // if (value == null || value.isEmpty) {
-                //   return 'Ingrese un Correo';
-                // }
-                // if (!EmailValidator.validate(value)) {
-                //   return 'El correo no es válido';
-                // }
-                // return null;
-              },
+              validator: Validators.createValidation(isEmail: true),
             ),
             const SizedBox(height: 20),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 150),
               child: ElevatedButton(
-                onPressed: () async {
-                  // final save = await provider.updateUser();
-                  // if (save) {
-                  //   NotificationService.showSnackBar('Usuario actualizado');
-                  //   Provider.of<UsersProvider>(context, listen: false).refreshUser(user);
-                  // } else {
-                  //   NotificationService.showSnackBarError('No se pudo guardar');
-                  // }
-                },
+                onPressed: onSubmit,
                 style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.indigo),
                   shadowColor: WidgetStatePropertyAll(Colors.transparent),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     Icon(Icons.save_outlined),
                     Text('Guardar'),
                   ],
