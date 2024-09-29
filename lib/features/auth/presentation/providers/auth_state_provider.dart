@@ -64,6 +64,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
 
   void logout() async {
     state = state.copyWith(status: AuthStatus.notauthenticated, usuario: null);
+    await storage.remove(StorageKeys.token);
   }
 }
 
