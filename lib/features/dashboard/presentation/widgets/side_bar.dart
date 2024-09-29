@@ -2,10 +2,11 @@ import 'package:fl_admin_dashboard/features/auth/presentation/providers/provider
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/providers.dart';
 import '../views/views.dart';
 import '../widgets/widgets.dart';
 
-class Sidebar extends ConsumerWidget {
+class Sidebar extends ConsumerStatefulWidget {
   const Sidebar({
     super.key,
     required this.currentRoute,
@@ -15,13 +16,18 @@ class Sidebar extends ConsumerWidget {
   final String? currentRoute;
   final void Function(int index) goBranch;
 
+  @override
+  ConsumerState<Sidebar> createState() => _SidebarState();
+}
+
+class _SidebarState extends ConsumerState<Sidebar> {
   void _navigateTo(int index) {
-    goBranch(index);
-    // SideMenuProvider.closeMenu();
+    widget.goBranch(index);
+    ref.read(dashboardSidebarProvider.notifier).closeMenu();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Container(
       width: 200,
       height: double.infinity,
@@ -35,14 +41,14 @@ class Sidebar extends ConsumerWidget {
           MenuItem(
             text: 'Dashboard',
             icon: Icons.compass_calibration_outlined,
-            isActive: currentRoute == DashboardView.fullRoute,
+            isActive: widget.currentRoute == DashboardView.fullRoute,
             onTap: () => _navigateTo(0),
           ),
           const MenuItem(text: 'Orders', icon: Icons.shopping_cart_outlined),
           MenuItem(
             text: 'Categories',
             icon: Icons.category_outlined,
-            isActive: currentRoute == CategoriesView.fullRoute,
+            isActive: widget.currentRoute == CategoriesView.fullRoute,
             onTap: () => _navigateTo(1),
           ),
           const MenuItem(text: 'Products', icon: Icons.dashboard_outlined),
@@ -50,7 +56,7 @@ class Sidebar extends ConsumerWidget {
           MenuItem(
             text: 'Users',
             icon: Icons.people_alt_outlined,
-            isActive: currentRoute == UsersView.fullRoute,
+            isActive: widget.currentRoute == UsersView.fullRoute,
             onTap: () => _navigateTo(2),
           ),
           const SizedBox(height: 30),
@@ -58,7 +64,7 @@ class Sidebar extends ConsumerWidget {
           MenuItem(
             text: 'Icons',
             icon: Icons.list_outlined,
-            isActive: currentRoute == IconsView.fullRoute,
+            isActive: widget.currentRoute == IconsView.fullRoute,
             onTap: () => _navigateTo(3),
           ),
           const MenuItem(text: 'Marketing', icon: Icons.campaign_outlined),
@@ -66,7 +72,7 @@ class Sidebar extends ConsumerWidget {
           MenuItem(
             text: 'Blank',
             icon: Icons.post_add_outlined,
-            isActive: currentRoute == BlankView.fullRoute,
+            isActive: widget.currentRoute == BlankView.fullRoute,
             onTap: () => _navigateTo(4),
           ),
           const SizedBox(height: 50),

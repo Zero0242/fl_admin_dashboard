@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/providers.dart';
 import 'widgets.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends ConsumerWidget {
   const NavBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
@@ -17,7 +19,7 @@ class NavBar extends StatelessWidget {
           if (size.width <= 700)
             IconButton(
               onPressed: () {
-                // SideMenuProvider.toggleMenu();
+                ref.read(dashboardSidebarProvider.notifier).openMenu();
               },
               icon: const Icon(Icons.menu_outlined),
             ),
