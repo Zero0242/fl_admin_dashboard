@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../widgets/widgets.dart';
+
 class DashboardLayout extends StatefulWidget {
   const DashboardLayout({super.key, required this.shell});
   static const String path = '/dashboard';
@@ -23,21 +25,21 @@ class _DashboardLayoutState extends State<DashboardLayout>
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    return const Scaffold(
-      backgroundColor: Color(0xffedf1f2),
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: const Color(0xffedf1f2),
       body: Stack(
         children: <Widget>[
           Row(
             children: <Widget>[
-              // if (size.width > 700) const Sidebar(),
+              if (size.width > 700) const Sidebar(),
               Expanded(
                 child: Column(
                   children: <Widget>[
-                    // NavBar
-                    // const NavBar(),
-                    // View
-                    Expanded(child: FlutterLogo()),
+                    const NavBar(),
+                    Expanded(
+                      child: widget.shell,
+                    ),
                     // Expanded(child: widget.child),
                   ],
                 ),

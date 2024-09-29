@@ -1,7 +1,7 @@
+import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
 
 import '../layout/dashboard_layout.dart';
-import '../widgets/widgets.dart';
 
 class BlankView extends StatelessWidget {
   const BlankView({super.key});
