@@ -31,3 +31,7 @@ flutter pub add dev:riverpod_lint
 ```bash
 dart run build_runner watch
 ```
+
+## NOTAS
+
+La evaluacion de `Platform.isAndroid` causa errores en web **NO OLVIDAR C:**

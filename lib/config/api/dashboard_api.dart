@@ -12,6 +12,6 @@ final dashboardApi = HttpPluginLite(
     final prefs = GetStorage();
     String? token = prefs.read<String>(StorageKeys.token);
     token ??= '';
-    request.headers['x-token'] = 'Bearer $token';
+    request.headers['x-token'] = token;
   },
 );
