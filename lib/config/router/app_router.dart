@@ -11,13 +11,11 @@ GoRouter appRouter(AppRouterRef ref) {
   return GoRouter(
     debugLogDiagnostics: kDebugMode,
     initialLocation: AuthLayout.path,
-    routes: [
+    routes: <RouteBase>[
       GoRoute(
         path: AuthLayout.path,
         redirect: (context, state) {
-          if (state.fullPath == AuthLayout.path) {
-            return [AuthLayout.path, LoginView.route].join('/');
-          }
+          if (state.fullPath == AuthLayout.path) return LoginView.fullRoute;
           return null;
         },
         routes: [
