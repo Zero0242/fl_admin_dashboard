@@ -50,7 +50,7 @@ GoRouter appRouter(AppRouterRef ref) {
         path: DashboardLayout.path,
         redirect: (context, state) {
           if (state.fullPath == DashboardLayout.path) {
-            return IconsView.fullRoute;
+            return DashboardView.fullRoute;
           }
           return null;
         },
@@ -61,15 +61,29 @@ GoRouter appRouter(AppRouterRef ref) {
             },
             branches: [
               StatefulShellBranch(
-                initialLocation: BlankView.fullRoute,
+                initialLocation: DashboardView.fullRoute,
                 routes: [
                   GoRoute(
-                    path: BlankView.route,
-                    pageBuilder: FadeTransitionRoute.route(const IconsView()),
+                    path: DashboardView.route,
+                    pageBuilder:
+                        FadeTransitionRoute.route(const DashboardView()),
+                  ),
+                  GoRoute(
+                    path: CategoriesView.route,
+                    pageBuilder:
+                        FadeTransitionRoute.route(const CategoriesView()),
+                  ),
+                  GoRoute(
+                    path: UsersView.route,
+                    pageBuilder: FadeTransitionRoute.route(const UsersView()),
                   ),
                   GoRoute(
                     path: IconsView.route,
                     pageBuilder: FadeTransitionRoute.route(const IconsView()),
+                  ),
+                  GoRoute(
+                    path: BlankView.route,
+                    pageBuilder: FadeTransitionRoute.route(const BlankView()),
                   ),
                 ],
               ),

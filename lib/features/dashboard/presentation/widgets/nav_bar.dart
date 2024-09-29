@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets.dart';
+
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
 
@@ -20,17 +22,16 @@ class NavBar extends StatelessWidget {
               icon: const Icon(Icons.menu_outlined),
             ),
           const SizedBox(width: 5),
-          // Search input
-          // if (size.width > 390)
-          // ConstrainedBox(
-          //   constraints: const BoxConstraints(maxWidth: 250),
-          //   child: const SearchText(),
-          // ),
-          // const Spacer(),
-          // const NotificationsIndicator(),
-          // const SizedBox(width: 5),
-          // const NavbarAvatar(),
-          // const SizedBox(width: 5),
+          if (size.width > 390)
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 250),
+              child: const SearchText(),
+            ),
+          const Spacer(),
+          const NotificationsIndicator(),
+          const SizedBox(width: 5),
+          const NavbarAvatar(),
+          const SizedBox(width: 5),
         ],
       ),
     );

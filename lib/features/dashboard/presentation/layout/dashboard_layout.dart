@@ -32,7 +32,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
         children: <Widget>[
           Row(
             children: <Widget>[
-              if (size.width > 700) const Sidebar(),
+              if (size.width > 700) Sidebar(shell: widget.shell),
               Expanded(
                 child: Column(
                   children: <Widget>[
@@ -40,7 +40,6 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     Expanded(
                       child: widget.shell,
                     ),
-                    // Expanded(child: widget.child),
                   ],
                 ),
               ),

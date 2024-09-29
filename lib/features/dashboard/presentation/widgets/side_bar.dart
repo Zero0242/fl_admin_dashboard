@@ -1,15 +1,27 @@
+import 'package:fl_admin_dashboard/features/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+import '../views/views.dart';
+import '../widgets/widgets.dart';
 
-  void _navigateTo(String routeName) {
+class Sidebar extends ConsumerWidget {
+  const Sidebar({super.key, required this.shell});
+  final StatefulNavigationShell shell;
+
+  void _navigateTo(int index) {
+    shell.goBranch(index);
     // NavigationService.navigateTo(routeName);
     // SideMenuProvider.closeMenu();
   }
 
+  String? get currentRoute {
+    return shell.shellRouteContext.routerState.fullPath;
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final provider = Provider.of<SideMenuProvider>(context);
     return Container(
       width: 200,
@@ -17,55 +29,56 @@ class Sidebar extends StatelessWidget {
       decoration: buildBoxDecoration(),
       child: ListView(
         physics: const ClampingScrollPhysics(),
-        children: const <Widget>[
-          // const Logo(),
-          // const SizedBox(height: 50),
-          // const TextSeparator(text: 'main'),
-          // MenuItem(
-          //   isActive: provider.currentPage == Flurorouter.dashboardRoute,
-          //   text: 'Dashboard',
-          //   icon: Icons.compass_calibration_outlined,
-          //   onTap: () => _navigateTo(Flurorouter.dashboardRoute),
-          // ),
-          // const MenuItem(text: 'Orders', icon: Icons.shopping_cart_outlined),
-          // MenuItem(
-          //   text: 'Categories',
-          //   icon: Icons.category_outlined,
-          //   isActive: provider.currentPage == Flurorouter.categoriesRoute,
-          //   onTap: () => _navigateTo(Flurorouter.categoriesRoute),
-          // ),
-          // const MenuItem(text: 'Products', icon: Icons.dashboard_outlined),
-          // const MenuItem(text: 'Discount', icon: Icons.attach_money),
-          // MenuItem(
-          //   text: 'Users',
-          //   icon: Icons.people_alt_outlined,
-          //   onTap: () => _navigateTo(Flurorouter.usersRoute),
-          //   isActive: provider.currentPage == Flurorouter.usersRoute,
-          // ),
-          // const SizedBox(height: 30),
-          // const TextSeparator(text: 'UI Elements'),
-          // MenuItem(
-          //   isActive: provider.currentPage == Flurorouter.iconsRoute,
-          //   text: 'Icons',
-          //   icon: Icons.list_outlined,
-          //   onTap: () => _navigateTo(Flurorouter.iconsRoute),
-          // ),
-          // const MenuItem(text: 'Marketing', icon: Icons.campaign_outlined),
-          // const MenuItem(text: 'Campaign', icon: Icons.note_add_outlined),
-          // MenuItem(
-          //   text: 'Black',
-          //   icon: Icons.post_add_outlined,
-          //   onTap: () => _navigateTo(Flurorouter.blankRoute),
-          // ),
-          // const SizedBox(height: 50),
-          // const TextSeparator(text: 'Exit'),
-          // Consumer<AuthProvider>(
-          //   builder: (_, provider, __) => MenuItem(
-          //     text: 'Logout',
-          //     icon: Icons.exit_to_app_outlined,
-          //     onTap: provider.logout,
-          //   ),
-          // ),
+        children: <Widget>[
+          const Logo(),
+          const SizedBox(height: 50),
+          const TextSeparator(text: 'main'),
+          MenuItem(
+            isActive: currentRoute == DashboardView.fullRoute,
+            text: 'Dashboard',
+            icon: Icons.compass_calibration_outlined,
+            // onTap: () => _navigateTo(0),
+          ),
+          const MenuItem(text: 'Orders', icon: Icons.shopping_cart_outlined),
+          MenuItem(
+            text: 'Categories',
+            icon: Icons.category_outlined,
+            isActive: currentRoute == CategoriesView.fullRoute,
+            // onTap: () => _navigateTo(Flurorouter.categoriesRoute),
+          ),
+          const MenuItem(text: 'Products', icon: Icons.dashboard_outlined),
+          const MenuItem(text: 'Discount', icon: Icons.attach_money),
+          MenuItem(
+            text: 'Users',
+            icon: Icons.people_alt_outlined,
+            isActive: currentRoute == UsersView.fullRoute,
+            // onTap: () => _navigateTo(Flurorouter.usersRoute),
+          ),
+          const SizedBox(height: 30),
+          const TextSeparator(text: 'UI Elements'),
+          MenuItem(
+            isActive: currentRoute == IconsView.fullRoute,
+            text: 'Icons',
+            icon: Icons.list_outlined,
+            // onTap: () => _navigateTo(3),
+          ),
+          const MenuItem(text: 'Marketing', icon: Icons.campaign_outlined),
+          const MenuItem(text: 'Campaign', icon: Icons.note_add_outlined),
+          MenuItem(
+            text: 'Blank',
+            icon: Icons.post_add_outlined,
+            isActive: currentRoute == BlankView.fullRoute,
+            // onTap: () => _navigateTo(4),
+          ),
+          const SizedBox(height: 50),
+          const TextSeparator(text: 'Exit'),
+          MenuItem(
+            text: 'Logout',
+            icon: Icons.exit_to_app_outlined,
+            onTap: () {
+              ref.read(authStateProvider.notifier).logout();
+            },
+          ),
         ],
       ),
     );
