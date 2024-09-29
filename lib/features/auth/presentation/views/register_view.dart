@@ -1,41 +1,42 @@
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layout/auth_layout.dart';
+import '../providers/providers.dart';
 import 'login_view.dart';
 
-class RegisterView extends StatefulWidget {
+class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
   static const String route = 'register';
   static const String fullRoute = '${AuthLayout.path}/$route';
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  ConsumerState<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _RegisterViewState extends ConsumerState<RegisterView> {
   final formulario = GlobalKey<FormState>();
   final fullname = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
 
   void onSubmit() {
-    // final res = formulario.currentState?.validate()??false;
-    // if (!res) return;
-    // final auth = of<AuthProvider>(context, listen: false);
-    // auth.register(
-    //   email: email.text,
-    //   password: password.text,
-    //   name: fullname.text,
-    // );
+    final res = formulario.currentState?.validate() ?? false;
+    if (!res) return;
+    ref.read(authStateProvider.notifier).register(
+          email: email.text,
+          password: password.text,
+          fullname: fullname.text,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 80),
+      margin: const EdgeInsets.only(top: 50),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
         child: ConstrainedBox(
@@ -44,7 +45,7 @@ class _RegisterViewState extends State<RegisterView> {
             autovalidateMode: AutovalidateMode.always,
             key: formulario,
             child: Column(
-              children: [
+              children: <Widget>[
                 TextFormField(
                   controller: fullname,
                   style: const TextStyle(color: Colors.white),

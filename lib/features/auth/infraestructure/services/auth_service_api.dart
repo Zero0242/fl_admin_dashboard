@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fl_admin_dashboard/config/config.dart';
 
 import '../../domain/domain.dart';
@@ -18,9 +20,12 @@ class AuthServiceApi extends AuthService {
   }
 
   @override
-  Future<(Usuario, String)?> login() async {
+  Future<(Usuario, String)?> login(Map<String, String> form) async {
     try {
-      final result = await dashboardApi.get('/api/auth/login');
+      final result = await dashboardApi.get(
+        '/api/auth/login',
+        data: json.encode(form),
+      );
       final usuario = Usuario.fromMap(result.data['usuario']);
       final token = result.data['token'] as String;
       return (usuario, token);
@@ -31,9 +36,12 @@ class AuthServiceApi extends AuthService {
   }
 
   @override
-  Future<(Usuario, String)?> register() async {
+  Future<(Usuario, String)?> register(Map<String, String> form) async {
     try {
-      final result = await dashboardApi.get('/api/usuarios');
+      final result = await dashboardApi.get(
+        '/api/usuarios',
+        data: form,
+      );
       final usuario = Usuario.fromMap(result.data['usuario']);
       final token = result.data['token'] as String;
       return (usuario, token);

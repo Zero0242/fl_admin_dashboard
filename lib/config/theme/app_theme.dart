@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// TODO: instalar la libreria de google_fonts
-
 class AppTheme {
   /// Configuracion del tema
   AppTheme({required bool isDarkMode}) : _isDarkMode = isDarkMode;

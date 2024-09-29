@@ -7,7 +7,7 @@ import 'auth_service_provider.dart';
 
 part 'auth_state_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AuthState extends _$AuthState {
   AuthState() {
     _checkLogin();
@@ -37,9 +37,9 @@ class AuthState extends _$AuthState {
     }
   }
 
-  void login() async {
+  void login(String email, String password) async {
     final service = ref.read(authServiceProvider);
-    final result = await service.login();
+    final result = await service.login({"correo": email, "password": password});
     if (result == null) return;
     state = state.copyWith(
       status: AuthStatus.authenticated,
@@ -47,9 +47,14 @@ class AuthState extends _$AuthState {
     );
   }
 
-  void register() async {
+  void register({
+    required String email,
+    required String password,
+    required String fullname,
+  }) async {
     final service = ref.read(authServiceProvider);
-    final result = await service.register();
+    final result = await service
+        .register({"correo": email, "password": password, "nombre": fullname});
     if (result == null) return;
     state = state.copyWith(
       status: AuthStatus.authenticated,
