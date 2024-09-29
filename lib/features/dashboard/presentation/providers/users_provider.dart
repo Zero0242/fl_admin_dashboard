@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -69,5 +70,16 @@ class UsersNotifier extends _$UsersNotifier {
     final result = await service.deleteUsuario(id);
     if (result == null) return;
     state = state.where((e) => e.id != id).toList();
+  }
+
+  void updateUserAvatar(String id, PlatformFile file) async {
+    final service = ref.read(usersServiceProvider);
+    final result = await service.addAvatar(id, file);
+    if (result == null) return;
+    state = state.map((e) {
+      if (e.id == id) return result;
+      return e;
+    }).toList();
+    ref.invalidate(userProviderByIdProvider);
   }
 }

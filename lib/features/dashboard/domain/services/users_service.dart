@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
 
 abstract class UsersService {
@@ -6,4 +7,5 @@ abstract class UsersService {
   Future<Usuario?> createUsuario(Map<String, dynamic> form);
   Future<Usuario?> updateUsuario(String id, Map<String, dynamic> form);
   Future<Usuario?> deleteUsuario(String id);
+  Future<Usuario?> addAvatar(String id, PlatformFile file);
 }

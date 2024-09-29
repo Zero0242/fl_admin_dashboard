@@ -107,6 +107,22 @@ class HttpPluginLite {
     );
   }
 
+  /// Realiza un PUT MultiPartRequest
+  Future<http.Response> putForm(
+    String endpoint, {
+    Map<String, String>? headers,
+    Map<String, String>? body,
+    List<http.MultipartFile>? files,
+  }) {
+    return _formRequest(
+      endpoint,
+      method: 'PUT',
+      headers: headers,
+      body: body,
+      files: files,
+    );
+  }
+
   /// Realiza una peticion PUT
   Future<http.Response> put(
     String endpoint, {

@@ -115,7 +115,6 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
           children: <Widget>[
             TextFormField(
               controller: nombre,
-              // onChanged: (value) => provider.copyUserWith(nombre: value),
               decoration: CustomInputs.formInputDecoration(
                 hint: "Nombre del usuario",
                 label: "Nombre",
@@ -198,15 +197,13 @@ class _AvatarContainer extends ConsumerWidget {
                         backgroundColor: Colors.indigo,
                         elevation: 9,
                         onPressed: () async {
-                          // final result = await FilePicker.platform.pickFiles();
+                          final file = await PickerPlugin.pickImage();
+                          final service =
+                              ref.read(usersNotifierProvider.notifier);
 
-                          // if (result != null) {
-                          //   NotificationService.showLoadIndicator(context);
-                          //   final updatedUser = await provider.uploadImage(result.files.first.bytes!);
-
-                          //   userProvider.refreshUser(updatedUser);
-                          // }
-                          // Navigator.of(context).pop();
+                          if (file != null) {
+                            service.updateUserAvatar(id, file);
+                          }
                         },
                         child: const Icon(Icons.camera_alt_outlined, size: 20),
                       ),
@@ -230,7 +227,7 @@ class _AvatarContainer extends ConsumerWidget {
   Widget avatar(String? avatar) {
     if (avatar == null) return Image.asset('assets/images/no-image.jpg');
     return FadeInImage.assetNetwork(
-      placeholder: 'assets/images/loader.gif',
+      placeholder: 'assets/images/loading.gif',
       image: avatar,
     );
   }

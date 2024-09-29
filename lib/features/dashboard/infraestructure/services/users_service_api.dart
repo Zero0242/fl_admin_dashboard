@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
+import 'package:http/http.dart';
 
 import '../../domain/domain.dart';
 
@@ -65,6 +67,23 @@ class UsersServiceApi extends UsersService {
       return Usuario.fromMap(data);
     } catch (e) {
       _logger.error('Error en updateUsuario: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<Usuario?> addAvatar(String id, PlatformFile file) async {
+    try {
+      final resp = await dashboardApi.putForm(
+        '/api/uploads/usuarios/$id',
+        files: [
+          MultipartFile.fromBytes('archivo', file.bytes!, filename: file.name),
+        ],
+      );
+      final map = jsonDecode(resp.body);
+      return Usuario.fromMap(map);
+    } catch (e) {
+      _logger.error('Error en addAvatar $e');
       return null;
     }
   }

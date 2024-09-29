@@ -21,7 +21,7 @@ class Usuario {
       nombre: map['nombre'] as String,
       correo: map['correo'] as String,
       rol: map['rol'] as String,
-      avatar: map['avatar'],
+      avatar: map['img'] ?? map['avatar'],
     );
   }
 }
