@@ -47,8 +47,35 @@ GoRouter appRouter(AppRouterRef ref) {
       ),
       // * Rutas de dashboard
       GoRoute(
-        path: DashboardScreen.route,
-        pageBuilder: FadeTransitionRoute.route(const DashboardScreen()),
+        path: DashboardLayout.path,
+        redirect: (context, state) {
+          if (state.fullPath == DashboardLayout.path) {
+            return IconsView.fullRoute;
+          }
+          return null;
+        },
+        routes: [
+          StatefulShellRoute.indexedStack(
+            builder: (context, state, navigationShell) {
+              return DashboardLayout(shell: navigationShell);
+            },
+            branches: [
+              StatefulShellBranch(
+                initialLocation: BlankView.fullRoute,
+                routes: [
+                  GoRoute(
+                    path: BlankView.route,
+                    pageBuilder: FadeTransitionRoute.route(const IconsView()),
+                  ),
+                  GoRoute(
+                    path: IconsView.route,
+                    pageBuilder: FadeTransitionRoute.route(const IconsView()),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     ],
     redirect: (context, state) {
@@ -66,7 +93,8 @@ GoRouter appRouter(AppRouterRef ref) {
         if (!isGoingTo.contains(DashboardScreen.route)) {
           return DashboardScreen.route;
         }
-        return DashboardScreen.route;
+        // TODO: probar casos extremos?
+        return null;
       }
       return null;
     },
