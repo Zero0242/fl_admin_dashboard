@@ -58,3 +58,9 @@ GoRouter appRouter(AppRouterRef ref) {
 ## NOTAS
 
 La evaluacion de `Platform.isAndroid` causa errores en web **NO OLVIDAR C:**
+
+# Docker
+
+Para generar la imagen `docker build --tag zero0242/flutter_admin_dashboard:latest .`
+
+Con esto montamos los contenidos estaticos en `nginx`
