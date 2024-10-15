@@ -32,6 +32,29 @@ flutter pub add dev:riverpod_lint
 dart run build_runner watch
 ```
 
+# GoRouter + Riverpod
+
+Se puede aplicar un ValueChanged como el refreshable para el `GoRouter`
+
+```dart
+@riverpod
+GoRouter appRouter(AppRouterRef ref) {
+  /**
+   * Esta seccion es donde reemplazamos el changenotifier, para poder usar un valuenotifier
+   * para refrescar el router, solo si cambiamos el status actual
+   */
+  final authListener = ValueNotifier<AuthStatus>(AuthStatus.checking);
+  ref.listen(authProvider.select((val) => val.status), (prev, next) {
+    authListener.value = next;
+  });
+  /*  */
+  return GoRouter(
+   refreshListenable: authListener,
+   ...resto de la config
+  );
+}
+```
+
 ## NOTAS
 
 La evaluacion de `Platform.isAndroid` causa errores en web **NO OLVIDAR C:**

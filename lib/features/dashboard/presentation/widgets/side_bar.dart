@@ -1,4 +1,4 @@
-import 'package:fl_admin_dashboard/features/auth/presentation/providers/providers.dart';
+import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -84,7 +84,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
           MenuItem(
             text: 'Logout',
             icon: Icons.exit_to_app_outlined,
-            onTap: () => ref.read(authStateProvider.notifier).logout(),
+            onTap: () => ref.read(authProvider.notifier).logout(),
           ),
         ],
       ),

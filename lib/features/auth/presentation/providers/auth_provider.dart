@@ -1,27 +1,28 @@
 import 'package:fl_admin_dashboard/config/config.dart';
-import 'package:fl_admin_dashboard/features/auth/domain/domain.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fl_admin_dashboard/features/auth/auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'auth_service_provider.dart';
+import '../../infraestructure/infraestructure.dart';
 
-final authStateProvider =
-    StateNotifierProvider<AuthStateNotifier, AuthState>((ref) {
-  final service = ref.read(authServiceProvider);
+part 'auth_provider.g.dart';
 
-  return AuthStateNotifier(service: service);
-});
-
-class AuthStateNotifier extends StateNotifier<AuthState> {
-  AuthStateNotifier({
-    required this.service,
-  }) : super(AuthState()) {
-    _checkLogin();
+@riverpod
+class Auth extends _$Auth {
+  Auth() {
+    WidgetsBinding.instance.addPostFrameCallback((ts) {
+      _checkLogin();
+    });
   }
-  final AuthService service;
-  GetStorage get storage => GetStorage();
+  @override
+  AuthState build() {
+    return AuthState();
+  }
 
-  final _logger = const Logger('AuthStateProvider');
+  AuthService get service => LocalAuthService();
+  GetStorage get storage => GetStorage();
+  Logger get _logger => const Logger('AuthStateProvider');
 
   void _checkLogin() async {
     _logger.log('Verificando login');

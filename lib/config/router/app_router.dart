@@ -5,17 +5,23 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'app_router_notifier.dart';
-
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
-  final routerNotifier = ref.read(appRouterNotifier);
+  /**
+   * Esta seccion es donde reemplazamos el changenotifier, para poder usar un valuenotifier
+   * para refrescar el router, solo si cambiamos el status actual
+   */
+  final authListener = ValueNotifier<AuthStatus>(AuthStatus.checking);
+  ref.listen(authProvider.select((val) => val.status), (prev, next) {
+    authListener.value = next;
+  });
+  /*  */
   return GoRouter(
     debugLogDiagnostics: kDebugMode,
     initialLocation: SplashScreen.route,
-    refreshListenable: routerNotifier,
+    refreshListenable: authListener,
     routes: <RouteBase>[
       // * Ruta de espera
       GoRoute(
@@ -116,7 +122,7 @@ GoRouter appRouter(AppRouterRef ref) {
     ],
     redirect: (context, state) {
       final isGoingTo = state.fullPath ?? '';
-      final authStatus = ref.read(authStateProvider);
+      final authStatus = ref.read(authProvider);
       // Si estamos cargando, solo puede estar en el splash screen
       if (isGoingTo == SplashScreen.route && authStatus.isChecking) return null;
       // Si no está autenticado, solo puede navegar por el auth

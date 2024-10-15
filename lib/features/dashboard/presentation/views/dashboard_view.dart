@@ -1,4 +1,4 @@
-import 'package:fl_admin_dashboard/features/auth/presentation/providers/providers.dart';
+import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +12,7 @@ class DashboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authUser = ref.watch(authStateProvider).usuario;
+    final authUser = ref.watch(authProvider).usuario;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: ListView(

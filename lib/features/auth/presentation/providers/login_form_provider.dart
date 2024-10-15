@@ -25,7 +25,7 @@ class LoginForm extends _$LoginForm {
         ref.read(loginFormKeyProvider).currentState?.validate() ?? false;
 
     if (!validate) return;
-    ref.read(authStateProvider.notifier).login(state.email, state.password);
+    ref.read(authProvider.notifier).login(state.email, state.password);
   }
 }
 

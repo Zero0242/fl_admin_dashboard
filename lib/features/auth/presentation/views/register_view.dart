@@ -26,7 +26,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   void onSubmit() {
     final res = formulario.currentState?.validate() ?? false;
     if (!res) return;
-    ref.read(authStateProvider.notifier).register(
+    ref.read(authProvider.notifier).register(
           email: email.text,
           password: password.text,
           fullname: fullname.text,
