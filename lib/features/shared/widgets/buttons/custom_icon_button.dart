@@ -22,8 +22,8 @@ class CustomIconButton extends StatelessWidget {
       style: ButtonStyle(
         shape: const WidgetStatePropertyAll(StadiumBorder()),
         backgroundColor: WidgetStatePropertyAll(color),
-        shadowColor: WidgetStatePropertyAll(color.withOpacity(0.5)),
-        overlayColor: WidgetStatePropertyAll(color.withOpacity(0.3)),
+        shadowColor: WidgetStatePropertyAll(color.withValues(alpha: 0.5)),
+        overlayColor: WidgetStatePropertyAll(color.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: <Widget>[

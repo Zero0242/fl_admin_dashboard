@@ -1,5 +1,6 @@
 import 'package:fl_admin_dashboard/config/plugins/logger_pluggin.dart';
 import 'package:fl_admin_dashboard/features/dashboard/infraestructure/infraestructure.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/domain.dart';
@@ -7,7 +8,7 @@ import '../../domain/domain.dart';
 part 'categories_provider.g.dart';
 
 @riverpod
-CategoriesService categoriesService(CategoriesServiceRef ref) {
+CategoriesService categoriesService(Ref ref) {
   return CategoryServiceApi();
 }
 

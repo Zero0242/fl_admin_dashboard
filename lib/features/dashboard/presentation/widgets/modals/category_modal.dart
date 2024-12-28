@@ -55,7 +55,7 @@ class _CategoryModalState extends ConsumerState<CategoryModal> {
               ),
             ],
           ),
-          Divider(color: Colors.white.withOpacity(0.3)),
+          Divider(color: Colors.white.withValues(alpha: 0.3)),
           TextFormField(
             initialValue: widget.categoria?.nombre,
             onChanged: (value) => _nombre = value,

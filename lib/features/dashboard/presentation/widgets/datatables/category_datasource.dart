@@ -47,7 +47,7 @@ class CategoriesSource extends DataTableSource {
                 },
                 icon: Icon(
                   Icons.delete_outlined,
-                  color: Colors.red.withOpacity(0.8),
+                  color: Colors.red.withValues(alpha: 0.8),
                 ),
               ),
             ],

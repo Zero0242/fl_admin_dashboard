@@ -1,38 +1,54 @@
-# Flutter Dashboard
+<p align="center">
+  <a href="https://flutter.dev/" target="blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Google-flutter-logo.png/800px-Google-flutter-logo.png" width="200" alt="App Logo" /></a>
+</p>
 
-Dashboard administrativo con riverpod + go_router
+# Proyecto Admin Web
 
-## Dev
+Dashboard administrativo con riverpod + go_router, curso de [Udemy](https://www.udemy.com/course/flutter-web-fh)
 
-1. Clonar repositorio
-2. Instalar dependencias `flutter pub get`
-3. Activar code generator
-   - `dart run build_runner build`: para generar y ejecutar
-   - `dart run build_runner watch`: para escribir proveedores de riverpod
-4. Ejecutar proyecto con F5
+> Creado en Flutter
 
-# Riverpod
+## DEV
 
-Instalacion de riverpod con code generation segun la [documentacion](https://riverpod.dev/docs/introduction/getting_started)
+1. Clonar repositorio con `git clone`
+2. Instalar los paquetes de Flutter con `flutter pub get`
+3. Construir proveedores `dart run build_runner build -d`
+4. Ejecutar el proyecto con `flutter run` o con `F5`
 
-- Instalaciones
+## Requisitos
 
-```bash
-flutter pub add flutter_riverpod
-flutter pub add riverpod_annotation
-flutter pub add dev:riverpod_generator
-flutter pub add dev:build_runner
-flutter pub add dev:custom_lint
-flutter pub add dev:riverpod_lint
-```
+1. Tener instalado Flutter
+2. Repositorio del backend [Github](https://github.com/Klerith/RN-Backend-MERN-CAFE)
 
-- Code Generator
+## Scripts
 
-```bash
-dart run build_runner watch
-```
+Algunos scripts que pueden ser utilizados
 
-# GoRouter + Riverpod
+| Comando                             | Descripcion                      |
+| ----------------------------------- | -------------------------------- |
+| `flutter pub get`                   | Instala las dependencias         |
+| `flutter  build web`                | Crea los assets estaticos de Web |
+| `dart fix --apply && dart format .` | Formatea el codigo               |
+| `flutter clean`                     | Limpia las dependencias          |
+
+#### Otros Scripts
+
+Otros scripts que pueden usar para fines de desarrollo, (acciones de paquetes)
+
+| Comando                          | Descripcion           |
+| -------------------------------- | --------------------- |
+| `dart run build_runner build -d` | Construir proveedores |
+| `dart run build_runner watch -d` | Construir proveedores |
+
+## Documentacion
+
+Links de librerias utilizadas
+
+- [Flutter]("https://flutter.dev/")
+- [Riverpod](https://riverpod.dev/docs/introduction/getting_started)
+
+## GoRouter + Riverpod
 
 Se puede aplicar un ValueChanged como el refreshable para el `GoRouter`
 

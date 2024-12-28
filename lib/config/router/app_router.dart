@@ -2,13 +2,14 @@ import 'package:fl_admin_dashboard/features/auth/auth.dart';
 import 'package:fl_admin_dashboard/features/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/features/shared/shared.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
 
 @riverpod
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   /**
    * Esta seccion es donde reemplazamos el changenotifier, para poder usar un valuenotifier
    * para refrescar el router, solo si cambiamos el status actual

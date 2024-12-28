@@ -20,6 +20,6 @@ class SearchText extends StatelessWidget {
 
   BoxDecoration buildBoxDecoration() => BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.grey.withValues(alpha: 0.1),
       );
 }

@@ -25,7 +25,7 @@ class _MenuItemState extends State<MenuItem> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       color: _isHovered || widget.isActive
-          ? Colors.white.withOpacity(0.1)
+          ? Colors.white.withValues(alpha: 0.1)
           : Colors.transparent,
       child: Material(
         color: Colors.transparent,
@@ -42,14 +42,14 @@ class _MenuItemState extends State<MenuItem> {
                 children: [
                   Icon(
                     widget.icon,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     widget.text,
                     style: GoogleFonts.roboto(
                       fontSize: 16,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                     ),
                   ),
                 ],

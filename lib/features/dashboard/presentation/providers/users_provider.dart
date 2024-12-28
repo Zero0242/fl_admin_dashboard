@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/features/auth/auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/domain.dart';
@@ -9,12 +10,12 @@ import '../../infraestructure/infraestructure.dart';
 part 'users_provider.g.dart';
 
 @riverpod
-UsersService usersService(UsersServiceRef ref) {
+UsersService usersService(Ref ref) {
   return UsersServiceApi();
 }
 
 @riverpod
-FutureOr<Usuario> userProviderById(UserProviderByIdRef ref, String id) {
+FutureOr<Usuario> userProviderById(Ref ref, String id) {
   final service = ref.read(usersServiceProvider);
   return service.getUsuarioById(id);
 }

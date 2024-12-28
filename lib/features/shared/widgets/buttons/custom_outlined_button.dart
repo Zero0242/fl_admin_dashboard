@@ -28,7 +28,7 @@ class CustomOutlinedButton extends StatelessWidget {
           BorderSide(color: color),
         ),
         backgroundColor: WidgetStatePropertyAll(
-          filled ? color.withOpacity(0.3) : Colors.transparent,
+          filled ? color.withValues(alpha: 0.3) : Colors.transparent,
         ),
       ),
       onPressed: onPressed,
