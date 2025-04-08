@@ -4,7 +4,7 @@ COPY . .
 RUN flutter pub get && dart run build_runner build -d
 RUN flutter build web --release
 
-FROM nginx:1.23.3 as runner
+FROM nginx:alpine3.18-slim as runner
 # Copiamos los archivos estaticos al container
 COPY --from=builder /app/build/web /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf

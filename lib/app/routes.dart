@@ -1,0 +1,10 @@
+export 'auth/login_view.dart';
+export 'auth/register_view.dart';
+export 'auth/splash_screen.dart';
+export 'dashboard/blank_view.dart';
+export 'dashboard/categories_view.dart';
+export 'dashboard/dashboard_screen.dart';
+export 'dashboard/dashboard_view.dart';
+export 'dashboard/icons_view.dart';
+export 'dashboard/user_view.dart';
+export 'dashboard/users_view.dart';
