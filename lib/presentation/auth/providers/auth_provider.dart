@@ -1,6 +1,6 @@
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/domain/auth/auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/auth/auth.dart';
@@ -8,33 +8,28 @@ import '../../../core/auth/auth.dart';
 part 'auth_provider.g.dart';
 
 @riverpod
-class Auth extends _$Auth {
-  Auth() {
-    WidgetsBinding.instance.addPostFrameCallback((ts) {
-      _checkLogin();
-    });
+FutureOr<AuthState> _authAsync(Ref ref) async {
+  final result = await AuthServiceApi().checkLogin();
+  if (result == null) {
+    return AuthState(status: AuthStatus.notauthenticated);
+  } else {
+    await StoragePlugin.write(StorageKeys.token, result.$2);
+    return AuthState(
+      status: AuthStatus.authenticated,
+      usuario: result.$1,
+    );
   }
+}
+
+@riverpod
+class Auth extends _$Auth {
   @override
   AuthState build() {
-    return AuthState();
+    final session = ref.watch(_authAsyncProvider).value ?? AuthState();
+    return session;
   }
 
-  AuthService get _service => LocalAuthService();
-  Logger get _logger => const Logger('AuthStateProvider');
-
-  void _checkLogin() async {
-    _logger.log('Verificando login');
-    final result = await _service.checkLogin();
-    if (result == null) {
-      state = state.copyWith(status: AuthStatus.notauthenticated);
-    } else {
-      await StoragePlugin.write(StorageKeys.token, result.$2);
-      state = state.copyWith(
-        status: AuthStatus.authenticated,
-        usuario: result.$1,
-      );
-    }
-  }
+  AuthService get _service => AuthServiceApi();
 
   void login(String email, String password) async {
     final result =
@@ -63,8 +58,8 @@ class Auth extends _$Auth {
   }
 
   void logout() async {
-    state = state.copyWith(status: AuthStatus.notauthenticated, usuario: null);
     await StoragePlugin.delete(StorageKeys.token);
+    ref.invalidate(_authAsyncProvider);
   }
 }
 

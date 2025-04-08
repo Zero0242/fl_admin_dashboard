@@ -96,11 +96,13 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
   }
 
   void onSubmit() async {
-    ref.read(usersNotifierProvider.notifier).updateUser(
-          widget.usuario.id,
-          correo: correo.text,
-          name: nombre.text,
-        );
+    final usersNotifier = ref.read(usersNotifierProvider.notifier);
+    await usersNotifier.updateUser(
+      widget.usuario.id,
+      correo: correo.text,
+      name: nombre.text,
+    );
+    ref.invalidate(userProviderByIdProvider(widget.usuario.id));
   }
 
   @override
@@ -164,7 +166,8 @@ class _AvatarContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProviderByIdProvider(id)).value!;
+    final user = ref.watch(userProviderByIdProvider(id)).requireValue;
+    final usersNotifier = ref.read(usersNotifierProvider.notifier);
 
     return WhiteCard(
       width: 250,
@@ -197,11 +200,10 @@ class _AvatarContainer extends ConsumerWidget {
                         elevation: 9,
                         onPressed: () async {
                           final file = await PickerPlugin.pickImage();
-                          final service =
-                              ref.read(usersNotifierProvider.notifier);
 
                           if (file != null) {
-                            service.updateUserAvatar(id, file);
+                            await usersNotifier.updateUserAvatar(id, file);
+                            ref.invalidate(userProviderByIdProvider(id));
                           }
                         },
                         child: const Icon(Icons.camera_alt_outlined, size: 20),

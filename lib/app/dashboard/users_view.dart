@@ -10,7 +10,7 @@ class UsersView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(usersNotifierProvider);
+    final usersAsync = ref.watch(usersNotifierProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: ListView(
@@ -40,7 +40,10 @@ class UsersView extends ConsumerWidget {
               const DataColumn(label: Text('UID')),
               const DataColumn(label: Text('Acciones')),
             ],
-            source: UsersDataSource(users, context: context),
+            source: UsersDataSource(
+              usersAsync.value ?? [],
+              context: context,
+            ),
           ),
         ],
       ),
