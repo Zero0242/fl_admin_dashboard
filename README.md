@@ -20,6 +20,7 @@ Dashboard administrativo con riverpod + go_router, curso de [Udemy](https://www.
 
 1. Tener instalado Flutter
 2. Repositorio del backend [Github](https://github.com/Klerith/RN-Backend-MERN-CAFE)
+   - O mediante el fork [Github](https://github.com/Zero0242/RN-Backend-MERN-CAFE)
 
 ## Scripts
 
