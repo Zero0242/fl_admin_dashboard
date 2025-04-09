@@ -1,4 +1,3 @@
-import 'package:fl_admin_dashboard/config/plugins/logger_pluggin.dart';
 import 'package:fl_admin_dashboard/core/dashboard/dashboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,43 +13,34 @@ CategoriesService categoriesService(Ref ref) {
 
 @riverpod
 class CategoriesNotifier extends _$CategoriesNotifier {
-  CategoriesNotifier() {
-    Future.microtask(_initialLoad);
-  }
   @override
-  List<Categoria> build() {
-    return [];
-  }
-
-  Logger get _logger => const Logger('CategoriesNotifier');
-
-  void _initialLoad() async {
-    _logger.log('Loading...');
+  FutureOr<List<Categoria>> build() {
     final service = ref.read(categoriesServiceProvider);
-    state = await service.getCategorias();
+    return service.getCategorias();
   }
 
   void addCategory(String name) async {
     final service = ref.read(categoriesServiceProvider);
     final result = await service.createCategoria({'nombre': name});
     if (result == null) return;
-    state = [result, ...state];
+    state = AsyncData([result, ...?state.value]);
   }
 
   void updateCategory(String id, String name) async {
     final service = ref.read(categoriesServiceProvider);
     final result = await service.updateCategoria(id, {'nombre': name});
     if (result == null) return;
-    state = state.map((e) {
+    final prev = state.value?.map((e) {
       if (e.id == id) return e.copyWith(nombre: name);
       return e;
     }).toList();
+    state = AsyncData([result, ...?prev]);
   }
 
   void deleteCategory(String id) async {
     final service = ref.read(categoriesServiceProvider);
     final result = await service.deleteCategoria(id);
     if (result == null) return;
-    state = state.where((e) => e.id != id).toList();
+    state = AsyncData([...?state.value?.where((e) => e.id != id)]);
   }
 }

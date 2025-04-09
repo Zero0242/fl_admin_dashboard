@@ -17,7 +17,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(categoriesNotifierProvider);
+    final categories = ref.watch(categoriesNotifierProvider).value ?? [];
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       physics: const ClampingScrollPhysics(),

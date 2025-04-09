@@ -96,13 +96,13 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
   }
 
   void onSubmit() async {
-    final usersNotifier = ref.read(usersNotifierProvider.notifier);
-    await usersNotifier.updateUser(
-      widget.usuario.id,
+    final userNotifier = ref.read(
+      userProviderByIdProvider(widget.usuario.id).notifier,
+    );
+    await userNotifier.updateUser(
       correo: correo.text,
       name: nombre.text,
     );
-    ref.invalidate(userProviderByIdProvider(widget.usuario.id));
   }
 
   @override
@@ -166,8 +166,8 @@ class _AvatarContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProviderByIdProvider(id)).requireValue;
-    final usersNotifier = ref.read(usersNotifierProvider.notifier);
+    final user = ref.watch(userProviderByIdProvider(id));
+    final userNotifier = ref.read(userProviderByIdProvider(id).notifier);
 
     return WhiteCard(
       width: 250,
@@ -184,7 +184,13 @@ class _AvatarContainer extends ConsumerWidget {
               height: 160,
               child: Stack(
                 children: <Widget>[
-                  ClipOval(child: avatar(user.avatar)),
+                  ClipOval(
+                    child: user.when(
+                      data: (data) => avatar(data.avatar),
+                      error: (_, __) => Icon(Icons.error),
+                      loading: () => CircularProgressIndicator.adaptive(),
+                    ),
+                  ),
                   Positioned(
                     bottom: 5,
                     right: 5,
@@ -200,10 +206,9 @@ class _AvatarContainer extends ConsumerWidget {
                         elevation: 9,
                         onPressed: () async {
                           final file = await PickerPlugin.pickImage();
-
                           if (file != null) {
-                            await usersNotifier.updateUserAvatar(id, file);
-                            ref.invalidate(userProviderByIdProvider(id));
+                            await userNotifier.updateUserAvatar(file);
+                            (context as Element).markNeedsBuild();
                           }
                         },
                         child: const Icon(Icons.camera_alt_outlined, size: 20),
@@ -215,7 +220,7 @@ class _AvatarContainer extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              user.nombre,
+              user.value?.nombre ?? '',
               style: const TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

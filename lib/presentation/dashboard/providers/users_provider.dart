@@ -14,9 +14,40 @@ UsersService usersService(Ref ref) {
 }
 
 @riverpod
-FutureOr<Usuario> userProviderById(Ref ref, String id) {
-  final service = ref.read(usersServiceProvider);
-  return service.getUsuarioById(id);
+class UserProviderById extends _$UserProviderById {
+  @override
+  FutureOr<Usuario> build(String id) {
+    final service = ref.read(usersServiceProvider);
+    return service.getUsuarioById(id);
+  }
+
+  Future<void> updateUser({
+    required String name,
+    required String correo,
+  }) async {
+    final service = ref.read(usersServiceProvider);
+    final result =
+        await service.updateUsuario(id, {'nombre': name, 'correo': correo});
+    if (result == null) return;
+    ref.invalidateSelf();
+    ref.invalidate(usersNotifierProvider);
+  }
+
+  void deleteUser() async {
+    final service = ref.read(usersServiceProvider);
+    final result = await service.deleteUsuario(id);
+    if (result == null) return;
+    ref.invalidateSelf();
+    ref.invalidate(usersNotifierProvider);
+  }
+
+  Future<void> updateUserAvatar(PlatformFile file) async {
+    final service = ref.read(usersServiceProvider);
+    final result = await service.addAvatar(id, file);
+    if (result == null) return;
+    ref.invalidateSelf();
+    ref.invalidate(usersNotifierProvider);
+  }
 }
 
 @riverpod
@@ -41,33 +72,5 @@ class UsersNotifier extends _$UsersNotifier {
     } else {
       state = AsyncData([result, ...state.requireValue]);
     }
-  }
-
-  Future<void> updateUser(
-    String id, {
-    required String name,
-    required String correo,
-  }) async {
-    final service = ref.read(usersServiceProvider);
-
-    final result =
-        await service.updateUsuario(id, {'nombre': name, 'correo': correo});
-    if (result == null) return;
-
-    ref.invalidateSelf();
-  }
-
-  void deleteUser(String id) async {
-    final service = ref.read(usersServiceProvider);
-    final result = await service.deleteUsuario(id);
-    if (result == null) return;
-    ref.invalidateSelf();
-  }
-
-  Future<void> updateUserAvatar(String id, PlatformFile file) async {
-    final service = ref.read(usersServiceProvider);
-    final result = await service.addAvatar(id, file);
-    if (result == null) return;
-    ref.invalidateSelf();
   }
 }
