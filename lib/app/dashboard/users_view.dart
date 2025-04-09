@@ -11,8 +11,8 @@ class UsersView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usersAsync = ref.watch(usersNotifierProvider);
-    final tableState = ref.watch(currentUserTableStateProvider);
-    final tableNotifier = ref.read(currentUserTableStateProvider.notifier);
+    final tableState = ref.watch(userTableStateProvider);
+    final tableNotifier = ref.read(userTableStateProvider.notifier);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: ListView(

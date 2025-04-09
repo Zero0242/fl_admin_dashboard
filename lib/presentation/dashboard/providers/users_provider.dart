@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:file_picker/file_picker.dart';
 import 'package:fl_admin_dashboard/domain/auth/auth.dart';
-import 'package:flutter/material.dart';
+import 'package:fl_admin_dashboard/domain/common/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -79,10 +79,10 @@ class UsersNotifier extends _$UsersNotifier {
 }
 
 @riverpod
-class CurrentUserTableState extends _$CurrentUserTableState {
+class UserTableState extends _$UserTableState {
   @override
-  UserTableState build() {
-    return const UserTableState();
+  TableState build() {
+    return const TableState();
   }
 
   void sortColumn<T>(
@@ -105,29 +105,5 @@ class CurrentUserTableState extends _$CurrentUserTableState {
 
   void changeRowsPerPage(int value) {
     state = state.copyWith(rowsPerPage: value);
-  }
-}
-
-class UserTableState {
-  const UserTableState({
-    this.ascendingColumn,
-    this.isAscending = false,
-    this.rowsPerPage = PaginatedDataTable.defaultRowsPerPage,
-  });
-
-  final int? ascendingColumn;
-  final bool isAscending;
-  final int rowsPerPage;
-
-  UserTableState copyWith({
-    int? ascendingColumn,
-    bool? isAscending,
-    int? rowsPerPage,
-  }) {
-    return UserTableState(
-      ascendingColumn: ascendingColumn ?? this.ascendingColumn,
-      isAscending: isAscending ?? this.isAscending,
-      rowsPerPage: rowsPerPage ?? this.rowsPerPage,
-    );
   }
 }

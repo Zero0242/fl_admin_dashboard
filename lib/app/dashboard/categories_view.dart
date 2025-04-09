@@ -3,21 +3,16 @@ import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoriesView extends ConsumerStatefulWidget {
+class CategoriesView extends ConsumerWidget {
   const CategoriesView({super.key});
   static const String route = 'categories';
   static const String fullRoute = '${DashboardLayout.path}/$route';
 
   @override
-  ConsumerState<CategoriesView> createState() => _CategoriesViewState();
-}
-
-class _CategoriesViewState extends ConsumerState<CategoriesView> {
-  int _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoriesNotifierProvider).value ?? [];
+    final tableState = ref.watch(categoriesTableStateProvider);
+    final tableNotifier = ref.read(categoriesTableStateProvider.notifier);
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       physics: const ClampingScrollPhysics(),
@@ -31,16 +26,24 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          columns: const <DataColumn>[
+          columns: <DataColumn>[
             DataColumn(label: Text('ID')),
-            DataColumn(label: Text('Categoria')),
+            DataColumn(
+              label: Text('Categoria'),
+              onSort: (columnIndex, _) {
+                tableNotifier.sortColumn(
+                  columnIndex,
+                  (category) => category.nombre,
+                );
+              },
+            ),
             DataColumn(label: Text('Usuario')),
             DataColumn(label: Text('Acciones')),
           ],
           source: CategoriesSource(categories, context),
-          rowsPerPage: _rowsPerPage,
+          rowsPerPage: tableState.rowsPerPage,
           onRowsPerPageChanged: (value) {
-            setState(() => _rowsPerPage = value ?? 10);
+            tableNotifier.changeRowsPerPage(value ?? 10);
           },
           actions: [
             CustomIconButton(
