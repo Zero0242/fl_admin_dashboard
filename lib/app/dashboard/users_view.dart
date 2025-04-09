@@ -11,6 +11,8 @@ class UsersView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usersAsync = ref.watch(usersNotifierProvider);
+    final tableState = ref.watch(currentUserTableStateProvider);
+    final tableNotifier = ref.read(currentUserTableStateProvider.notifier);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: ListView(
@@ -19,22 +21,25 @@ class UsersView extends ConsumerWidget {
           Text('Users View', style: CustomLabels.h1),
           const SizedBox(height: 10),
           PaginatedDataTable(
-            // sortAscending: provider.ascending,
-            // sortColumnIndex: provider.sortColumnIndex,
+            rowsPerPage: tableState.rowsPerPage,
+            onRowsPerPageChanged: (value) {
+              final updated = value ?? tableState.rowsPerPage;
+              tableNotifier.changeRowsPerPage(updated);
+            },
+            sortAscending: tableState.isAscending,
+            sortColumnIndex: tableState.ascendingColumn,
             columns: <DataColumn>[
               const DataColumn(label: Text('Avatar')),
               DataColumn(
                 label: const Text('Nombre'),
                 onSort: (index, _) {
-                  // provider.sortColumnIndex = index;
-                  // provider.sortColumn<String>((user) => user.nombre);
+                  tableNotifier.sortColumn(index, (user) => user.nombre);
                 },
               ),
               DataColumn(
                 label: const Text('Email'),
                 onSort: (index, _) {
-                  // provider.sortColumnIndex = index;
-                  // provider.sortColumn<String>((user) => user.correo);
+                  tableNotifier.sortColumn(index, (user) => user.correo);
                 },
               ),
               const DataColumn(label: Text('UID')),
