@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/providers.dart';
 import '../widgets.dart';
 
 class NavBar extends ConsumerWidget {
@@ -19,7 +18,7 @@ class NavBar extends ConsumerWidget {
           if (size.width <= 700)
             IconButton(
               onPressed: () {
-                ref.read(dashboardSidebarProvider.notifier).openMenu();
+                Scaffold.of(context).openDrawer();
               },
               icon: const Icon(Icons.menu_outlined),
             ),

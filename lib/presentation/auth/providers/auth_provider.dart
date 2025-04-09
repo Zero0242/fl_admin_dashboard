@@ -8,8 +8,14 @@ import '../../../core/auth/auth.dart';
 part 'auth_provider.g.dart';
 
 @riverpod
+AuthService authService(Ref ref) {
+  return AuthServiceApi();
+}
+
+@riverpod
 FutureOr<AuthState> _authAsync(Ref ref) async {
-  final result = await AuthServiceApi().checkLogin();
+  final service = ref.read(authServiceProvider);
+  final result = await service.checkLogin();
   if (result == null) {
     return AuthState(status: AuthStatus.notauthenticated);
   } else {
@@ -29,11 +35,9 @@ class Auth extends _$Auth {
     return session;
   }
 
-  AuthService get _service => AuthServiceApi();
-
   void login(String email, String password) async {
-    final result =
-        await _service.login({"correo": email, "password": password});
+    final service = ref.read(authServiceProvider);
+    final result = await service.login({"correo": email, "password": password});
     if (result == null) return;
     await StoragePlugin.write(StorageKeys.token, result.$2);
     state = state.copyWith(
@@ -47,7 +51,8 @@ class Auth extends _$Auth {
     required String password,
     required String fullname,
   }) async {
-    final result = await _service
+    final service = ref.read(authServiceProvider);
+    final result = await service
         .register({"correo": email, "password": password, "nombre": fullname});
     if (result == null) return;
     await StoragePlugin.write(StorageKeys.token, result.$2);
