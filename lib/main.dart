@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +9,12 @@ import 'config/config.dart';
 void main() async {
   await StoragePlugin.init();
   usePathUrlStrategy();
-  runApp(const ProviderScope(child: MainApp()));
+  runApp(
+    const ProviderScope(
+      observers: [if (kDebugMode) DebugObserver()],
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends ConsumerWidget {
