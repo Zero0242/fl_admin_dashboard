@@ -1,4 +1,4 @@
-import 'package:fl_admin_dashboard/config/config.dart';
+import 'package:fl_admin_dashboard/helpers/utils/utils.dart';
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,9 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   void onSubmit() {
     final res = formulario.currentState?.validate() ?? false;
     if (!res) return;
-    ref.read(authProvider.notifier).register(
+    ref
+        .read(authProvider.notifier)
+        .register(
           email: email.text,
           password: password.text,
           fullname: fullname.text,
@@ -79,10 +81,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                CustomOutlinedButton(
-                  onPressed: onSubmit,
-                  text: 'Crear Cuenta',
-                ),
+                CustomOutlinedButton(onPressed: onSubmit, text: 'Crear Cuenta'),
                 const SizedBox(height: 20),
                 LinkText(
                   text: 'Ir al login',

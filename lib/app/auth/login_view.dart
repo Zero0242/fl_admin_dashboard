@@ -1,4 +1,4 @@
-import 'package:fl_admin_dashboard/config/config.dart';
+import 'package:fl_admin_dashboard/helpers/utils/utils.dart';
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';

@@ -1,17 +1,22 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
 import 'config/config.dart';
 
 void main() async {
-  await StoragePlugin.init();
+  WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
+  await bootstrap();
   runApp(
-    const ProviderScope(
-      observers: [if (kDebugMode) DebugObserver()],
+    ProviderScope(
+      observers: [
+        TalkerRiverpodObserver(
+          settings: TalkerRiverpodLoggerSettings(printStateFullData: false),
+        ),
+      ],
       child: MainApp(),
     ),
   );
@@ -32,9 +37,7 @@ class MainApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('es'),
-      ],
+      supportedLocales: const [Locale('es')],
     );
   }
 }

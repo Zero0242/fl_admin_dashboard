@@ -1,5 +1,6 @@
 import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/domain/auth/auth.dart';
+import 'package:fl_admin_dashboard/helpers/plugins/plugins.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,10 +21,7 @@ FutureOr<AuthState> _authAsync(Ref ref) async {
     return AuthState(status: AuthStatus.notauthenticated);
   } else {
     await StoragePlugin.write(StorageKeys.token, result.$2);
-    return AuthState(
-      status: AuthStatus.authenticated,
-      usuario: result.$1,
-    );
+    return AuthState(status: AuthStatus.authenticated, usuario: result.$1);
   }
 }
 
@@ -52,8 +50,11 @@ class Auth extends _$Auth {
     required String fullname,
   }) async {
     final service = ref.read(authServiceProvider);
-    final result = await service
-        .register({"correo": email, "password": password, "nombre": fullname});
+    final result = await service.register({
+      "correo": email,
+      "password": password,
+      "nombre": fullname,
+    });
     if (result == null) return;
     await StoragePlugin.write(StorageKeys.token, result.$2);
     state = state.copyWith(
@@ -69,22 +70,13 @@ class Auth extends _$Auth {
 }
 
 class AuthState {
-  AuthState({
-    this.usuario,
-    this.status = AuthStatus.checking,
-  });
+  AuthState({this.usuario, this.status = AuthStatus.checking});
 
   final Usuario? usuario;
   final AuthStatus status;
 
-  AuthState copyWith({
-    Usuario? usuario,
-    AuthStatus? status,
-  }) {
-    return AuthState(
-      usuario: usuario,
-      status: status ?? this.status,
-    );
+  AuthState copyWith({Usuario? usuario, AuthStatus? status}) {
+    return AuthState(usuario: usuario, status: status ?? this.status);
   }
 
   bool get isChecking {

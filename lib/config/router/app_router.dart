@@ -17,8 +17,8 @@ GoRouter appRouter(Ref ref) {
    * para refrescar el router, solo si cambiamos el status actual
    */
   final authListener = ValueNotifier<AuthStatus>(AuthStatus.checking);
-  ref.listen(authProvider.select((val) => val.status), (prev, next) {
-    authListener.value = next;
+  ref.listen(authProvider, (_, next) {
+    authListener.value = next.status;
   });
   /*  */
   return GoRouter(
@@ -40,7 +40,7 @@ GoRouter appRouter(Ref ref) {
         },
         routes: [
           ShellRoute(
-            builder: (_, __, child) => AuthLayout(child: child),
+            builder: (_, _, child) => AuthLayout(child: child),
             routes: [
               GoRoute(
                 path: LoginView.route,
@@ -73,8 +73,9 @@ GoRouter appRouter(Ref ref) {
                 routes: [
                   GoRoute(
                     path: DashboardView.route,
-                    pageBuilder:
-                        FadeTransitionRoute.route(const DashboardView()),
+                    pageBuilder: FadeTransitionRoute.route(
+                      const DashboardView(),
+                    ),
                   ),
                 ],
               ),
@@ -82,8 +83,9 @@ GoRouter appRouter(Ref ref) {
                 routes: [
                   GoRoute(
                     path: CategoriesView.route,
-                    pageBuilder:
-                        FadeTransitionRoute.route(const CategoriesView()),
+                    pageBuilder: FadeTransitionRoute.route(
+                      const CategoriesView(),
+                    ),
                   ),
                 ],
               ),

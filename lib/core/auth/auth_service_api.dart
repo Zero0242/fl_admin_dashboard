@@ -1,16 +1,19 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:fl_admin_dashboard/config/bootstrap.dart';
 import 'package:fl_admin_dashboard/config/config.dart';
-
-import '../../domain/auth/auth.dart';
+import 'package:fl_admin_dashboard/domain/auth/auth.dart';
+import 'package:fl_admin_dashboard/helpers/plugins/plugins.dart';
 
 class AuthServiceApi extends AuthService {
-  final _logger = const Logger('AuthServiceApi');
+  static const _logger = Logger('AuthServiceApi');
+  Dio get dashboardApi => locator.get<Dio>();
   @override
   Future<(Usuario, String)?> checkLogin() async {
     try {
       final result = await dashboardApi.get('/api/auth');
-      final data = jsonDecode(result.body);
+      final data = result.data;
       final usuario = Usuario.fromMap(data['usuario']);
       final token = data['token'] as String;
       return (usuario, token);
@@ -25,9 +28,9 @@ class AuthServiceApi extends AuthService {
     try {
       final result = await dashboardApi.post(
         '/api/auth/login',
-        body: json.encode(form),
+        data: json.encode(form),
       );
-      final data = jsonDecode(result.body);
+      final data = result.data;
       final usuario = Usuario.fromMap(data['usuario']);
       final token = data['token'] as String;
       return (usuario, token);
@@ -42,9 +45,9 @@ class AuthServiceApi extends AuthService {
     try {
       final result = await dashboardApi.post(
         '/api/usuarios',
-        body: jsonEncode(form),
+        data: jsonEncode(form),
       );
-      final data = jsonDecode(result.body);
+      final data = result.data;
       final usuario = Usuario.fromMap(data['usuario']);
       final token = data['token'] as String;
       return (usuario, token);

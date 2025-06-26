@@ -1,5 +1,6 @@
-import 'package:fl_admin_dashboard/config/config.dart';
 import 'package:fl_admin_dashboard/domain/auth/auth.dart';
+import 'package:fl_admin_dashboard/helpers/plugins/plugins.dart';
+import 'package:fl_admin_dashboard/helpers/utils/utils.dart';
 import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -99,10 +100,7 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
     final userNotifier = ref.read(
       userProviderByIdProvider(widget.usuario.id).notifier,
     );
-    await userNotifier.updateUser(
-      correo: correo.text,
-      name: nombre.text,
-    );
+    await userNotifier.updateUser(correo: correo.text, name: nombre.text);
   }
 
   @override
@@ -187,7 +185,7 @@ class _AvatarContainer extends ConsumerWidget {
                   ClipOval(
                     child: user.when(
                       data: (data) => avatar(data.avatar),
-                      error: (_, __) => Icon(Icons.error),
+                      error: (_, _) => Icon(Icons.error),
                       loading: () => CircularProgressIndicator.adaptive(),
                     ),
                   ),

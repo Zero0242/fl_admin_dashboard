@@ -18,8 +18,11 @@ class Usuario {
   final String? avatar;
 
   factory Usuario.fromMap(Map<String, dynamic> map) {
-    final url =
-        [dashboardApi.baseURL, 'api/uploads/usuarios', map['uid']].join('/');
+    final url = [
+      Envs.getApiUrl(),
+      'api/uploads/usuarios',
+      map['uid'],
+    ].join('/');
     return Usuario(
       id: map['uid'] as String,
       nombre: map['nombre'] as String,

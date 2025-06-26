@@ -12,7 +12,7 @@ class Sidebar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
-    final currentRoute = router.state?.matchedLocation ?? '';
+    final currentRoute = router.state.matchedLocation;
 
     void handleNavigation(String route) {
       Scaffold.of(context).closeDrawer();
@@ -81,17 +81,9 @@ class Sidebar extends ConsumerWidget {
   BoxDecoration buildBoxDecoration() {
     return const BoxDecoration(
       gradient: LinearGradient(
-        colors: <Color>[
-          Color(0xff092044),
-          Color(0xff092042),
-        ],
+        colors: <Color>[Color(0xff092044), Color(0xff092042)],
       ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 10,
-        ),
-      ],
+      boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
     );
   }
 }
