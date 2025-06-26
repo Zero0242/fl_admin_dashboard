@@ -4,8 +4,9 @@ import 'package:fl_admin_dashboard/helpers/utils/utils.dart';
 import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'dashboard_layout.dart';
 import 'users_view.dart';
@@ -77,41 +78,29 @@ class _UserViewBody extends StatelessWidget {
   }
 }
 
-class _UserViewForm extends ConsumerStatefulWidget {
+class _UserViewForm extends HookConsumerWidget {
   const _UserViewForm(this.usuario);
   final Usuario usuario;
 
-  @override
-  ConsumerState<_UserViewForm> createState() => _UserViewFormState();
-}
-
-class _UserViewFormState extends ConsumerState<_UserViewForm> {
-  final nombre = TextEditingController();
-  final correo = TextEditingController();
-
-  @override
-  void initState() {
-    final user = widget.usuario;
-    nombre.text = user.nombre;
-    correo.text = user.correo;
-    super.initState();
-  }
-
-  void onSubmit() async {
-    final userNotifier = ref.read(
-      userProviderByIdProvider(widget.usuario.id).notifier,
-    );
-    await userNotifier.updateUser(correo: correo.text, name: nombre.text);
-  }
+  // @override
+  // void initState() {
+  //   final user = widget.usuario;
+  //   nombre.text = user.nombre;
+  //   correo.text = user.correo;
+  //   super.initState();
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final nombre = useTextEditingController(text: usuario.nombre);
+    final correo = useTextEditingController(text: usuario.correo);
     return WhiteCard(
       title: 'Información general',
       child: Form(
         // key: provider.formKey,
         autovalidateMode: AutovalidateMode.always,
         child: Column(
+          spacing: 20,
           children: <Widget>[
             TextFormField(
               controller: nombre,
@@ -124,7 +113,7 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
                 message: 'Debe ingresar un nombre',
               ),
             ),
-            const SizedBox(height: 20),
+
             TextFormField(
               controller: correo,
               decoration: CustomInputs.formInputDecoration(
@@ -134,11 +123,19 @@ class _UserViewFormState extends ConsumerState<_UserViewForm> {
               ),
               validator: Validators.createValidation(isEmail: true),
             ),
-            const SizedBox(height: 20),
+
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 150),
               child: ElevatedButton(
-                onPressed: onSubmit,
+                onPressed: () async {
+                  final userNotifier = ref.read(
+                    userProviderByIdProvider(usuario.id).notifier,
+                  );
+                  await userNotifier.updateUser(
+                    correo: correo.text,
+                    name: nombre.text,
+                  );
+                },
                 style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.indigo),
                   shadowColor: WidgetStatePropertyAll(Colors.transparent),
@@ -173,11 +170,12 @@ class _AvatarContainer extends ConsumerWidget {
       child: SizedBox(
         width: double.infinity,
         child: Column(
+          spacing: 20,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text('Profile', style: CustomLabels.h2),
-            const SizedBox(height: 20),
+
             SizedBox(
               width: 150,
               height: 160,
@@ -217,7 +215,7 @@ class _AvatarContainer extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+
             Text(
               user.value?.nombre ?? '',
               style: const TextStyle(fontWeight: FontWeight.bold),

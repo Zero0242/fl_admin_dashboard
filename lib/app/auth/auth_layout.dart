@@ -1,26 +1,15 @@
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class AuthLayout extends StatefulWidget {
+class AuthLayout extends HookWidget {
   const AuthLayout({super.key, required this.child});
   static const String path = '/auth';
   final Widget child;
 
   @override
-  State<AuthLayout> createState() => _AuthLayoutState();
-}
-
-class _AuthLayoutState extends State<AuthLayout> {
-  final controller = ScrollController();
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = useScrollController();
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Scrollbar(
@@ -31,9 +20,9 @@ class _AuthLayoutState extends State<AuthLayout> {
           physics: const ClampingScrollPhysics(),
           children: <Widget>[
             if (size.width > 1000)
-              _DesktopComponent(child: widget.child)
+              _DesktopComponent(child: child)
             else
-              _MobileComponent(child: widget.child),
+              _MobileComponent(child: child),
             const LinkBar(),
           ],
         ),
