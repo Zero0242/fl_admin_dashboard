@@ -37,18 +37,12 @@ GlobalKey<FormState> loginFormKey(Ref ref) {
 }
 
 class LoginFormState {
-  LoginFormState({
-    this.email = '',
-    this.password = '',
-  });
+  LoginFormState({this.email = '', this.password = ''});
 
   final String email;
   final String password;
 
-  LoginFormState copyWith({
-    String? email,
-    String? password,
-  }) {
+  LoginFormState copyWith({String? email, String? password}) {
     return LoginFormState(
       email: email ?? this.email,
       password: password ?? this.password,

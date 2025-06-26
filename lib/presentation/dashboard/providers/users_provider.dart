@@ -28,8 +28,10 @@ class UserProviderById extends _$UserProviderById {
     required String correo,
   }) async {
     final service = ref.read(usersServiceProvider);
-    final result =
-        await service.updateUsuario(id, {'nombre': name, 'correo': correo});
+    final result = await service.updateUsuario(id, {
+      'nombre': name,
+      'correo': correo,
+    });
     if (result == null) return;
     ref.invalidateSelf();
     ref.invalidate(usersNotifierProvider);
@@ -66,9 +68,11 @@ class UsersNotifier extends _$UsersNotifier {
     required String fullname,
   }) async {
     final service = ref.read(usersServiceProvider);
-    final result = await service.createUsuario(
-      {"correo": email, "password": password, "nombre": fullname},
-    );
+    final result = await service.createUsuario({
+      "correo": email,
+      "password": password,
+      "nombre": fullname,
+    });
     final previous = await future;
     if (result == null) {
       state = AsyncData(previous);

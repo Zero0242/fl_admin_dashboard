@@ -1,6 +1,5 @@
+import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/widgets.dart';
 
 class AuthLayout extends StatefulWidget {
   const AuthLayout({super.key, required this.child});
@@ -90,11 +89,7 @@ class _MobileComponent extends StatelessWidget {
         children: <Widget>[
           const SizedBox(height: 20),
           const AuthHeader(),
-          SizedBox(
-            height: 420,
-            width: double.infinity,
-            child: child,
-          ),
+          SizedBox(height: 420, width: double.infinity, child: child),
           const SizedBox(
             width: double.infinity,
             height: 400,

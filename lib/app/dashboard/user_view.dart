@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'dashboard_layout.dart';
 import 'users_view.dart';
 
 class UserView extends ConsumerWidget {

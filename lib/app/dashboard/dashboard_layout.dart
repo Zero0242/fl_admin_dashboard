@@ -1,8 +1,7 @@
+import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../widgets/widgets.dart';
 
 class DashboardLayout extends ConsumerWidget {
   const DashboardLayout({super.key, required this.shell});

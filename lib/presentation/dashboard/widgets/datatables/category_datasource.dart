@@ -26,9 +26,7 @@ class CategoriesSource extends DataTableSource {
                   showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
-                    builder: (_) => CategoryModal(
-                      categoria: categoria,
-                    ),
+                    builder: (_) => CategoryModal(categoria: categoria),
                   );
                 },
                 icon: const Icon(Icons.edit_outlined),
@@ -38,9 +36,7 @@ class CategoriesSource extends DataTableSource {
                   showDialog(
                     context: context,
                     builder: (_) {
-                      return _DeleteDialog(
-                        categoria: categoria,
-                      );
+                      return _DeleteDialog(categoria: categoria);
                     },
                   );
                 },
@@ -77,10 +73,7 @@ class _DeleteDialog extends ConsumerWidget {
       title: const Text('¿Está seguro de borrarlo?'),
       content: Text('¿Borrar definitivamente ${categoria.nombre}?'),
       actions: <Widget>[
-        TextButton(
-          onPressed: context.pop,
-          child: const Text('No'),
-        ),
+        TextButton(onPressed: context.pop, child: const Text('No')),
         TextButton(
           onPressed: () async {
             ref

@@ -1,5 +1,1 @@
-enum AuthStatus {
-  checking,
-  authenticated,
-  notauthenticated,
-}
+enum AuthStatus { checking, authenticated, notauthenticated }

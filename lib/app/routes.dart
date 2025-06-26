@@ -1,8 +1,10 @@
+export 'auth/auth_layout.dart';
 export 'auth/login_view.dart';
 export 'auth/register_view.dart';
 export 'auth/splash_screen.dart';
 export 'dashboard/blank_view.dart';
 export 'dashboard/categories_view.dart';
+export 'dashboard/dashboard_layout.dart';
 export 'dashboard/dashboard_screen.dart';
 export 'dashboard/dashboard_view.dart';
 export 'dashboard/icons_view.dart';

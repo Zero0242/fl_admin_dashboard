@@ -1,7 +1,6 @@
 import 'package:fl_admin_dashboard/app/routes.dart';
 import 'package:fl_admin_dashboard/domain/auth/auth.dart';
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
-import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

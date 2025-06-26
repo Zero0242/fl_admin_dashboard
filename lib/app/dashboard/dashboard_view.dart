@@ -1,8 +1,9 @@
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
-import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'dashboard_layout.dart';
 
 class DashboardView extends ConsumerWidget {
   const DashboardView({super.key});

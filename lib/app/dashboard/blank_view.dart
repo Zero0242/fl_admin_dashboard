@@ -1,6 +1,7 @@
-import 'package:fl_admin_dashboard/presentation/dashboard/dashboard.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
+
+import 'dashboard_layout.dart';
 
 class BlankView extends StatelessWidget {
   const BlankView({super.key});
@@ -16,10 +17,7 @@ class BlankView extends StatelessWidget {
         children: <Widget>[
           Text('Dashboard View', style: CustomLabels.h1),
           const SizedBox(height: 10),
-          const WhiteCard(
-            title: 'Sales Statistics',
-            child: Text('Hola Mundo'),
-          ),
+          const WhiteCard(title: 'Sales Statistics', child: Text('Hola Mundo')),
         ],
       ),
     );

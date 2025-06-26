@@ -3,6 +3,8 @@ import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'dashboard_layout.dart';
+
 class CategoriesView extends ConsumerWidget {
   const CategoriesView({super.key});
   static const String route = 'categories';

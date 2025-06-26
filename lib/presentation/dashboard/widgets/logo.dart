@@ -11,10 +11,7 @@ class Logo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Icon(
-            Icons.bubble_chart_outlined,
-            color: Color(0xff7a6bf5),
-          ),
+          const Icon(Icons.bubble_chart_outlined, color: Color(0xff7a6bf5)),
           const SizedBox(width: 10),
           Text(
             'Admin',

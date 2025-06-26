@@ -49,10 +49,7 @@ class DebugObserver extends ProviderObserver {
   ) {
     final providerName = _format(provider);
 
-    log(
-      '$providerName\n> was initialized with $value',
-      name: 'Riverpod',
-    );
+    log('$providerName\n> was initialized with $value', name: 'Riverpod');
   }
 
   @override
@@ -88,8 +85,11 @@ class DebugObserver extends ProviderObserver {
     ProviderContainer container,
   ) {
     final providerName = _format(provider);
-    final formattedStackTrace =
-        stackTrace.toString().split('\n').take(5).join('\n');
+    final formattedStackTrace = stackTrace
+        .toString()
+        .split('\n')
+        .take(5)
+        .join('\n');
 
     log(
       name: 'Riverpod',

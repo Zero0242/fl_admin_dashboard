@@ -99,9 +99,7 @@ class Validators {
 
   /// Valida que un valor sea decimal
   /// * `maxLength` cantidad maxima de caracteres
-  static List<TextInputFormatter> createDecimalValidation({
-    int? maxLength,
-  }) {
+  static List<TextInputFormatter> createDecimalValidation({int? maxLength}) {
     return [
       FilteringTextInputFormatter.deny(RegExp(r'[^0-9.]')),
       if (maxLength != null) LengthLimitingTextInputFormatter(maxLength),

@@ -3,6 +3,8 @@ import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'dashboard_layout.dart';
+
 class UsersView extends ConsumerWidget {
   const UsersView({super.key});
   static const String route = 'users';
@@ -45,10 +47,7 @@ class UsersView extends ConsumerWidget {
               const DataColumn(label: Text('UID')),
               const DataColumn(label: Text('Acciones')),
             ],
-            source: UsersDataSource(
-              usersAsync.value ?? [],
-              context: context,
-            ),
+            source: UsersDataSource(usersAsync.value ?? [], context: context),
           ),
         ],
       ),

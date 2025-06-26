@@ -40,10 +40,7 @@ class _MenuItemState extends State<MenuItem> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
-                    widget.icon,
-                    color: Colors.white.withValues(alpha: 0.3),
-                  ),
+                  Icon(widget.icon, color: Colors.white.withValues(alpha: 0.3)),
                   const SizedBox(height: 10),
                   Text(
                     widget.text,

@@ -2,40 +2,24 @@ import 'package:fl_admin_dashboard/helpers/utils/utils.dart';
 import 'package:fl_admin_dashboard/presentation/auth/auth.dart';
 import 'package:fl_admin_dashboard/presentation/shared/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'auth_layout.dart';
 import 'login_view.dart';
 
-class RegisterView extends ConsumerStatefulWidget {
+class RegisterView extends HookConsumerWidget {
   const RegisterView({super.key});
   static const String route = 'register';
   static const String fullRoute = '${AuthLayout.path}/$route';
 
   @override
-  ConsumerState<RegisterView> createState() => _RegisterViewState();
-}
-
-class _RegisterViewState extends ConsumerState<RegisterView> {
-  final formulario = GlobalKey<FormState>();
-  final fullname = TextEditingController();
-  final email = TextEditingController();
-  final password = TextEditingController();
-
-  void onSubmit() {
-    final res = formulario.currentState?.validate() ?? false;
-    if (!res) return;
-    ref
-        .read(authProvider.notifier)
-        .register(
-          email: email.text,
-          password: password.text,
-          fullname: fullname.text,
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final formulario = useMemoized(() => GlobalKey<FormState>());
+    final fullname = useTextEditingController();
+    final email = useTextEditingController();
+    final password = useTextEditingController();
     return Container(
       margin: const EdgeInsets.only(top: 50),
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -46,6 +30,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             autovalidateMode: AutovalidateMode.always,
             key: formulario,
             child: Column(
+              spacing: 20,
               children: <Widget>[
                 TextFormField(
                   controller: fullname,
@@ -56,7 +41,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     iconData: Icons.supervised_user_circle_outlined,
                   ),
                 ),
-                const SizedBox(height: 20),
+
                 TextFormField(
                   controller: email,
                   style: const TextStyle(color: Colors.white),
@@ -67,7 +52,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     iconData: Icons.email_outlined,
                   ),
                 ),
-                const SizedBox(height: 20),
+
                 TextFormField(
                   controller: password,
                   style: const TextStyle(color: Colors.white),
@@ -80,9 +65,22 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     iconData: Icons.lock_outline,
                   ),
                 ),
-                const SizedBox(height: 20),
-                CustomOutlinedButton(onPressed: onSubmit, text: 'Crear Cuenta'),
-                const SizedBox(height: 20),
+
+                CustomOutlinedButton(
+                  onPressed: () {
+                    final res = formulario.currentState?.validate() ?? false;
+                    if (!res) return;
+                    ref
+                        .read(authProvider.notifier)
+                        .register(
+                          email: email.text,
+                          password: password.text,
+                          fullname: fullname.text,
+                        );
+                  },
+                  text: 'Crear Cuenta',
+                ),
+
                 LinkText(
                   text: 'Ir al login',
                   onTap: () => (context).go(LoginView.fullRoute),

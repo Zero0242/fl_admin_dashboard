@@ -83,13 +83,9 @@ class _CategoryModalState extends ConsumerState<CategoryModal> {
 
   BoxDecoration buildDecoration() {
     return const BoxDecoration(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(20),
-      ),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       color: Color(0xff0f2041),
-      boxShadow: [
-        BoxShadow(color: Colors.black26),
-      ],
+      boxShadow: [BoxShadow(color: Colors.black26)],
     );
   }
 }
