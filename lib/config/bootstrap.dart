@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:fl_admin_dashboard/config/config.dart';
+import 'package:fl_admin_dashboard/helpers/plugins/storage_plugin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -15,7 +16,7 @@ GetIt locator = GetIt.instance;
 /// * Inicia los servicios de la aplicación en general
 Future<void> bootstrap() async {
   log('Registrando servicios', name: 'GetIt');
-
+  // * Singletons
   final talker = locator.registerSingleton<Talker>(
     TalkerFlutter.init(
       settings: TalkerSettings(
@@ -26,6 +27,9 @@ Future<void> bootstrap() async {
     ),
   );
   locator.registerLazySingleton(() => DashboardApi.setup());
+
+  // * Inicialización
+  await StoragePlugin.init();
   FlutterError.onError = (details) {
     talker.error("main_app", details.toStringShort(), details.stack);
     talker.handle(details.exceptionAsString(), details.stack);

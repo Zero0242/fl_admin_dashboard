@@ -82,22 +82,15 @@ class _UserViewForm extends HookConsumerWidget {
   const _UserViewForm(this.usuario);
   final Usuario usuario;
 
-  // @override
-  // void initState() {
-  //   final user = widget.usuario;
-  //   nombre.text = user.nombre;
-  //   correo.text = user.correo;
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context, ref) {
+    final formKey = useMemoized(() => GlobalKey<FormState>());
     final nombre = useTextEditingController(text: usuario.nombre);
     final correo = useTextEditingController(text: usuario.correo);
     return WhiteCard(
       title: 'Información general',
       child: Form(
-        // key: provider.formKey,
+        key: formKey,
         autovalidateMode: AutovalidateMode.always,
         child: Column(
           spacing: 20,
@@ -128,6 +121,8 @@ class _UserViewForm extends HookConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 150),
               child: ElevatedButton(
                 onPressed: () async {
+                  final ok = formKey.currentState?.validate() ?? false;
+                  if (!ok) return;
                   final userNotifier = ref.read(
                     userProviderByIdProvider(usuario.id).notifier,
                   );
